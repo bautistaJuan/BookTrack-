@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { auth } from "../../lib/firebaseConfig";
+import { auth } from "../lib/firebaseConfig";
 import { useRouter } from "next/navigation";
 
 export default function BookDetail() {
