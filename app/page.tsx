@@ -4,6 +4,7 @@ import { signInWithGoogle, logOut } from "./lib/auth";
 import { useState } from "react";
 import { useBooksByUser } from "./lib/firestore"
 import { useAuth } from "./context/AuthContext"
+import Link from "next/link";
 
 export default function Home() {
   const { user } = useAuth();
@@ -36,7 +37,7 @@ export default function Home() {
               {books.length > 0 ? (
                 books.map((book) => (
                   <div key={book.id} className="bg-white p-4 m-2 rounded shadow w-96">
-                    <h2 className="text-xl">{book.title}</h2>
+                    <Link href={`/mislibros/${book.id}`} className="text-xl">{book.title}</Link>
                   </div>
                 ))
               ) : (
