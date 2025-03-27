@@ -5,12 +5,20 @@ import { useState } from "react";
 import { useBooksByUser } from "./lib/firestore"
 import { useAuth } from "./context/AuthContext"
 import Link from "next/link";
+import { FilterBooks } from "./types/types";
+
+const filters: { label: string; value: FilterBooks }[] = [
+  { label: "Todas", value: "all" },
+  { label: "Pendiente", value: "to read" },
+  { label: "Leídas", value: "finished" },
+  { label: "Leyendo", value: "reading" },
+];
 
 export default function Home() {
   const { user } = useAuth();
-  const { books, loading } = useBooksByUser();
+  const [filter, setFilter] = useState<FilterBooks>("all");
+  const { books, loading } = useBooksByUser(filter);
   const [isModalOpen, setModalIsOpen] = useState(false);
-
   if (loading) {
     return <p className="text-5xl text-blue-700">Cargando...</p>;
   }
@@ -28,10 +36,16 @@ export default function Home() {
           <main className="border grow w-full ">
             {/* Nav para filtros */}
             <nav className="flex w-full justify-evenly border p-4">
-              <li className="border-2 list-none mt-4 p-2 text-2xl">Pendiente</li>
-              <li className="border-2 list-none mt-4 p-2 text-2xl">Leidas</li>
-              <li className="border-2 list-none mt-4 p-2 text-2xl">Lista de deseo</li>
-            </nav>
+              {filters.map(({ label, value }) => (
+                <li
+                  key={value}
+                  className={`border-2 list-none mt-4 p-2 text-2xl cursor-pointer ${filter === value ? "bg-blue-200" : ""}`}
+                  onClick={() => setFilter(value)}
+                >
+                  {label}
+                </li>
+              ))}
+            </nav>;
             <div className="w-full flex justify-center flex-col bg-green-500">
               <h1>LISTA DE LIBROS AQUÍ ABAJO...</h1>
               {books.length > 0 ? (

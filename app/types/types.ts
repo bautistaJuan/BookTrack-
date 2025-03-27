@@ -1,10 +1,12 @@
+export type FilterBooks = "to read" | "reading" | "finished" | "all";
+
 export interface Book {
   id?: string;
   title: string;
   author: string;
   pages: number;
   pagesRead: number;
-  status: "to read" | "reading" | "finished";
+  status: FilterBooks;
   userId?: string;
 }
 
