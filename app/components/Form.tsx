@@ -1,19 +1,48 @@
 "use client";
-import { useState } from "react";
-import { addBook } from "../lib/firestore";
+import { useEffect, useState } from "react";
+import { addBook, updateBookInFirestore } from "../lib/firestore";
+import { Book, FilterBooks, FormProps } from "../types/types";
+import { BookHeart } from "lucide-react";
 
-type eventChangetype = React.ChangeEvent<HTMLInputElement>;
-
-export default function AddBookForm({ closeModal }: { closeModal: React.Dispatch<React.SetStateAction<boolean>> }) {
+export default function AddBookForm({
+    closeModal,
+    bookToEdit,
+}: FormProps) {
     const [title, setTitle] = useState("");
     const [author, setAuthor] = useState("");
     const [pages, setPages] = useState(0);
     const [pagesRead, setPagesRead] = useState(0);
-    const statuses: Array<"finished" | "reading" | "to read"> = ["finished", "reading", "to read"];
-    const [status, setStatus] = useState<"finished" | "reading" | "to read">("finished");
+    const statuses: Array<"finished" | "reading" | "to read"> = [
+        "finished",
+        "reading",
+        "to read",
+    ];
+    const [status, setStatus] = useState<FilterBooks>("to read");
+
+    // Cargar datos de bookToEdit cuando cambia
+    useEffect(() => {
+        if (bookToEdit) {
+            setTitle(bookToEdit.title);
+            setAuthor(bookToEdit.author);
+            setPages(bookToEdit.pages);
+            setPagesRead(bookToEdit.pagesRead);
+            setStatus(bookToEdit.status);
+        } else {
+            resetForm();
+        }
+    }, [bookToEdit]);
+
+    const resetForm = () => {
+        setTitle("");
+        setAuthor("");
+        setPages(0);
+        setPagesRead(0);
+        setStatus("to read");
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        // VALIDACIONES ANTES DE HACER CUALQUIER COSA
         if (!title.trim() || !author.trim() || pages <= 0) {
             alert("Verifica bien los datos antes de enviar el formulario");
             return;
@@ -22,58 +51,74 @@ export default function AddBookForm({ closeModal }: { closeModal: React.Dispatch
             alert("Las páginas leídas no pueden ser mayores que el total de páginas.");
             return;
         }
+        if (isNaN(pages) || isNaN(pagesRead)) {
+            alert("Los valores de las páginas deben ser números válidos.");
+            return;
+        }
+        // MANEJO DE ACCIONES
         try {
-            addBook({
-                title,
-                author,
-                pages,
-                pagesRead,
-                status
-            })
-            setTitle("");
-            setAuthor("");
-            setPages(0);
-            setPagesRead(0);
-            closeModal(false);
+            // CONDICIÓN PARA SABER SI DEBEMOS EDITAR O ACTUALIZAR
+            if (bookToEdit) {
+                // VAMOS A GUARDAR SOLAMENTE LOS CAMPOS EDITADOS EN ESTE OBJ
+                const updatedData: Partial<Book> = {};
+
+                if (title !== bookToEdit.title) updatedData.title = title;
+                if (author !== bookToEdit.author) updatedData.author = author;
+                if (pages !== bookToEdit.pages) updatedData.pages = pages;
+                if (pagesRead !== bookToEdit.pagesRead) updatedData.pagesRead = pagesRead;
+                if (status !== bookToEdit.status) updatedData.status = status;
+
+                // SI EL USUARIO NO HIZO NINGUN CAMBIO, RETORNAMOS
+                if (Object.keys(updatedData).length === 0) return;
+                await updateBookInFirestore(bookToEdit.id!, updatedData);
+                alert("Libro actualizado exitosamente");
+            } else {
+                await addBook({
+                    title,
+                    author,
+                    pages,
+                    pagesRead,
+                    status,
+                });
+                alert("Libro agregado exitosamente");
+            }
         } catch (error) {
-            console.error("Error al agregar el libro:", error);
-            alert("Hubo un error al agregar el libro.");
+            console.error("Error submitting form:", error);
+            alert("Hubo un error al guardar el libro");
+        } finally {
+            resetForm();
+            closeModal(false);
         }
     };
-    const handleTitleChange = (e: eventChangetype) => {
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
-    }
-    const handleAuthorChange = (e: eventChangetype) => {
+    };
+    const handleAuthorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAuthor(e.target.value);
-    }
+    };
     const handlePagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value, 10);
-
         if (value < 0) {
             alert("No se pueden ingresar valores negativos.");
-            setPages(0);  // Restablecemos a 0 en caso de error
             return;
         }
-
-        setPages(value);  // Si todo está bien, actualizamos el estado
+        setPages(value);
     };
-    const handlePagesRead = (e: eventChangetype) => {
+    const handlePagesRead = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(e.target.value, 10);
         if (value < 0) {
             alert("No se pueden ingresar valores negativos.");
-            setPagesRead(0);  // Restablecemos a 0 en caso de error
-            return;
-        } if (pagesRead >= pages) {
-            alert("¿Estas escribiendo la continuación del libro?");
-            setPagesRead(0);  // Restablecemos a 0 en caso de error
             return;
         }
-        setPagesRead(value)
-    }
+        setPagesRead(value);
+    };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-md fixed ">
-            <h2 className="text-lg font-semibold mb-3">Agregar un nuevo libro</h2>
+        <form onSubmit={handleSubmit} className="bg-white p-4 rounded-sm">
+            <h2 className="text-lg font-semibold mb-3">
+                {bookToEdit ? "Editar libro" : "Agregar un nuevo libro"}
+            </h2>
 
             <label className="block text-sm font-medium">Título:</label>
             <input
@@ -130,8 +175,9 @@ export default function AddBookForm({ closeModal }: { closeModal: React.Dispatch
                     />
                 </div>
             )}
-            <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full mt-2">
-                Agregar libro
+            <button type="submit" className="flex  justify-center  gap-1 bg-accent text-white font-semibold p-2 rounded w-full mt-2">
+                <BookHeart />
+                {bookToEdit ? "Actualizar libro" : "Agregar libro"}
             </button>
         </form>
     );

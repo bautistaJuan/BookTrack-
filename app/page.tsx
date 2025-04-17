@@ -1,101 +1,116 @@
 "use client";
 import AddBookForm from "./components/Form";
-import { signInWithGoogle, logOut } from "./lib/auth";
+import { logOut } from "./lib/auth";
 import { useState } from "react";
-import { useBooksByUser } from "./lib/firestore"
-import { useAuth } from "./context/AuthContext"
-import Link from "next/link";
-import { FilterBooks } from "./types/types";
+import { deleteBookFromFirestore, useBooksByUser } from "./lib/firestore";
+import { useAuth } from "./context/AuthContext";
+import { Book, Filter, FilterBooks } from "./types/types";
+import Welcome from "./components/Welcome";
+import { BookOpen, CheckCircle, CircleFadingPlus, CircleX, Eye, SquareLibrary } from "lucide-react";
+import BookCard from "./components/BookCard";
 
-const filters: { label: string; value: FilterBooks }[] = [
-  { label: "Todas", value: "all" },
-  { label: "Pendiente", value: "to read" },
-  { label: "Leídas", value: "finished" },
-  { label: "Leyendo", value: "reading" },
+const filters: Filter[] = [
+  { label: "Todas", value: "all", icon: SquareLibrary },
+  { label: "Pendiente", value: "to read", icon: Eye },
+  { label: "Leídas", value: "finished", icon: CheckCircle },
+  { label: "Leyendo", value: "reading", icon: BookOpen },
 ];
+
 
 export default function Home() {
   const { user } = useAuth();
   const [filter, setFilter] = useState<FilterBooks>("all");
   const { books, loading } = useBooksByUser(filter);
   const [isModalOpen, setModalIsOpen] = useState(false);
+  const [bookToEdit, setBookToEdit] = useState<Book | null>(null);
+  const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+
   if (loading) {
     return <p className="text-5xl text-blue-700">Cargando...</p>;
   }
+  if (!user) return <Welcome />;
+
+  const handleEditBook = (book: Book) => {
+    setBookToEdit(book);
+    setModalIsOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+    setBookToEdit(null); // Esto asegura que el formulario se limpie al cerrar
+  };
 
   return (
-    <div className="flex flex-col items-center min-h-screen">
-      {user ? (
-        <>
-          <header className="border min-w-2xl  p-4 flex justify-between">
-            <h1>Bienvenido, {user.displayName}</h1>
-            <button onClick={logOut} className="bg-red-500 text-white p-2 rounded cursor-pointer">
-              Cerrar sesión
-            </button>
-          </header>
-          <main className="border grow w-full ">
-            {/* Nav para filtros */}
-            <nav className="flex w-full justify-evenly border p-4">
-              {filters.map(({ label, value }) => (
-                <li
-                  key={value}
-                  className={`border-2 list-none mt-4 p-2 text-2xl cursor-pointer ${filter === value ? "bg-blue-200" : ""}`}
-                  onClick={() => setFilter(value)}
-                >
-                  {label}
-                </li>
-              ))}
-            </nav>;
-            <div className="w-full flex justify-center flex-col bg-green-500">
-              <h1>LISTA DE LIBROS AQUÍ ABAJO...</h1>
-              {books.length > 0 ? (
-                books.map((book) => (
-                  <div key={book.id} className="bg-white p-4 m-2 rounded shadow w-96">
-                    <Link href={`/mislibros/${book.id}`} className="text-xl">{book.title}</Link>
-                  </div>
-                ))
-              ) : (
-                <p className="text-white">No hay libros guardados.</p>
-              )}
-            </div>
-          </main>
-
-          {/* Modal */}
-          {isModalOpen && (
-            <div
-              className="fixed inset-0 flex items-center justify-center"
-              onClick={() => setModalIsOpen(false)} // Cierra el modal al hacer clic fuera
-            >
-              <div
-                className=" p-6 rounded shadow-lg w-96 border"
-                onClick={(e) => e.stopPropagation()} // Evita cerrar el modal si se hace clic dentro
-              >
-                <button
-                  onClick={() => setModalIsOpen(false)}
-                  className="mt-4 bg-red-500 text-white p-2 rounded w-full"
-                >
-                  Cerrar
-                </button>
-                <AddBookForm closeModal={setModalIsOpen} />
-              </div>
-            </div>
-          )}
-
-          {/* Botón flotante */}
-          {!isModalOpen && (
-            <button
-              onClick={() => setModalIsOpen(true)}
-              className="text-6xl border flex items-center justify-center rounded-2xl text-blue-500 fixed bottom-5 right-5 cursor-pointer bg-white p-4 shadow-lg"
-            >
-              +
-            </button>
-          )}
-        </>
-      ) : (
-        <button onClick={signInWithGoogle} className="bg-blue-500 text-white p-2 rounded">
-          Iniciar sesión con Google
+    <div className="flex flex-col bg-red-400 items-center h-screen">
+      <header className="bg-secondary p-4 flex justify-between w-full rounded-b-lg">
+        <h1>Bienvenido, {user.displayName}</h1>
+        <button onClick={logOut} className=" text-white p-2 rounded cursor-pointer">
+          Cerrar sesión
         </button>
+      </header>
+      <main className="border grow w-full">
+        <nav className="flex justify-evenly p-4">
+          {filters.map((f) => (
+            <li
+              key={f.value}
+              className={`
+                list-none  cursor-pointer 
+                ${filter === f.value ? "text-secondary" : "text-surface"} flex p-4 gap-2 `
+              }
+              onClick={() => setFilter(f.value)}
+            >
+              <f.icon className={`${filter === f.value ? "text-secondary" : "text-primary"} w-5 h-5`} />
+              {f.label}
+            </li>
+          ))}
+        </nav>
+        <div className="w-full flex flex-col gap-4 items-start border-4 border-red-700  h-screen">
+          {books.length > 0 ? (
+            books.map((book) => (
+              <BookCard
+                key={book.id}
+                book={book}
+                openDropdownId={openDropdownId}
+                setOpenDropdownId={setOpenDropdownId}
+                handleEditBook={handleEditBook}
+                deleteBookFromFirestore={deleteBookFromFirestore}
+              />
+
+            ))
+          ) : (
+            <p className="text-white">No hay libros guardados.</p>
+          )}
+        </div>
+      </main>
+
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={handleCloseModal} // Cierra el modal al hacer clic fuera
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+          ><button
+            onClick={handleCloseModal}
+            className=" text-white p-2 absolute top-4 right-2"
+          >
+              <CircleX />
+            </button>
+            <AddBookForm closeModal={handleCloseModal} bookToEdit={bookToEdit} />
+          </div>
+        </div>
+      )}
+
+      {!isModalOpen && (
+        <button
+          onClick={() => setModalIsOpen(true)}
+          className="fixed bottom-6 right-6 z-50 bg-white text-blue-500 p-4 rounded-full shadow-xl hover:shadow-2xl transition-shadow duration-300 flex items-center justify-center"
+          aria-label="Agregar nuevo libro"
+        >
+          <CircleFadingPlus className="w-8 h-8" />
+        </button>
+
       )}
     </div>
   );
-}
+} 

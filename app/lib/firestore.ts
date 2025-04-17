@@ -5,10 +5,16 @@ import {
   query,
   onSnapshot,
   where,
+  doc,
+  getDoc,
+  deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Book, FilterBooks } from "../types/types";
+
+// Funciones de utilidad para Firestore
 const addBook = async ({ title, author, pages, pagesRead, status }: Book) => {
   const user = auth.currentUser;
   if (!user) return;
@@ -26,6 +32,39 @@ const addBook = async ({ title, author, pages, pagesRead, status }: Book) => {
   }
 };
 
+const deleteBookFromFirestore = async (bookId: string) => {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is logged in");
+  }
+  try {
+    const ref = doc(db, "users", user.uid, "books", bookId);
+    await deleteDoc(ref);
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+const updateBookInFirestore = async (
+  bookId: string,
+  updatedData: Partial<Book>
+) => {
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is logged in");
+  }
+
+  try {
+    const ref = doc(db, "users", user.uid, "books", bookId);
+    await updateDoc(ref, updatedData);
+    console.log("Libro actualizado correctamente");
+  } catch (error) {
+    console.error("Error al actualizar el libro:", error);
+  }
+};
+
+// Hooks relacionados con Firestore
 const useBooksByUser = (filter: FilterBooks = "all") => {
   const { user, loading } = useAuth();
   const [books, setBooks] = useState<Book[]>([]);
@@ -51,4 +90,43 @@ const useBooksByUser = (filter: FilterBooks = "all") => {
   return { books, loading };
 };
 
-export { addBook, useBooksByUser };
+const useBookById = (id: string) => {
+  const { user } = useAuth();
+  const [book, setBook] = useState<Book | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id || !user) {
+      setLoading(false);
+      return;
+    }
+    const ref = doc(db, "users", user.uid, "books", id);
+    const getBookDetailFromFirestore = async () => {
+      try {
+        const docSnapshot = await getDoc(ref);
+        if (!docSnapshot.exists()) {
+          throw new Error("El libro no existe");
+        }
+        setBook({ id: docSnapshot.id, ...docSnapshot.data() } as Book);
+      } catch (error) {
+        const msg =
+          error instanceof Error ? error.message : "Error desconocido";
+        setError(msg);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getBookDetailFromFirestore();
+  }, [id, user]);
+
+  return { loading, book, error };
+};
+export {
+  addBook,
+  useBooksByUser,
+  useBookById,
+  deleteBookFromFirestore,
+  updateBookInFirestore,
+};
