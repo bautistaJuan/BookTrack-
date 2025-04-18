@@ -41,30 +41,39 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col bg-red-400 items-center h-screen">
-      <header className="bg-secondary p-4 flex justify-between w-full rounded-b-lg">
-        <h1>Bienvenido, {user.displayName}</h1>
-        <button onClick={logOut} className=" text-white p-2 rounded cursor-pointer">
+    <div className="w-full max-w-3xl px-4 mx-auto">
+      <header className="w-full px-4 py-3 flex items-center justify-between border-b bg-white shadow-sm">
+        <h1 className="text-lg font-medium text-textPrimary">
+          Bienvenido, {user.displayName}
+        </h1>
+        <button
+          onClick={logOut}
+          className="text-sm text-red-500 hover:bg-red-100 px-3 py-1 rounded transition"
+        >
           Cerrar sesión
         </button>
       </header>
-      <main className="border grow w-full">
-        <nav className="flex justify-evenly p-4">
+
+      <main className="grow w-full">
+        <nav className="flex flex-wrap justify-around items-center border rounded-lg p-2 mt-4 bg-white shadow-sm">
           {filters.map((f) => (
-            <li
+            <button
               key={f.value}
-              className={`
-                list-none  cursor-pointer 
-                ${filter === f.value ? "text-secondary" : "text-surface"} flex p-4 gap-2 `
-              }
               onClick={() => setFilter(f.value)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition 
+        ${filter === f.value
+                  ? "bg-secondary/10 text-secondary font-medium"
+                  : "text-textSecondary hover:bg-gray-100"} 
+        w-full sm:w-auto`}
             >
-              <f.icon className={`${filter === f.value ? "text-secondary" : "text-primary"} w-5 h-5`} />
+              <f.icon className={`w-4 h-4 ${filter === f.value ? "text-secondary" : "text-primary"}`} />
               {f.label}
-            </li>
+            </button>
           ))}
         </nav>
-        <div className="w-full flex flex-col gap-4 items-start border-4 border-red-700  h-screen">
+
+
+        <div className="w-full flex flex-col gap-4 items-start mt-4">
           {books.length > 0 ? (
             books.map((book) => (
               <BookCard

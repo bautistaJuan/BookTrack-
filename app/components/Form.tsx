@@ -115,70 +115,87 @@ export default function AddBookForm({
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-4 rounded-sm">
-            <h2 className="text-lg font-semibold mb-3">
+        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-sm w-full max-w-md space-y-4">
+            <h2 className="text-xl font-semibold text-textPrimary">
                 {bookToEdit ? "Editar libro" : "Agregar un nuevo libro"}
             </h2>
 
-            <label className="block text-sm font-medium">Título:</label>
-            <input
-                type="text"
-                value={title}
-                onChange={handleTitleChange}
-                className="w-full p-2 border rounded mb-2"
-                placeholder="Ej: El principito"
-            />
+            <div>
+                <label className="block text-sm font-medium mb-1">Título:</label>
+                <input
+                    type="text"
+                    value={title}
+                    onChange={handleTitleChange}
+                    placeholder="Ej: El principito"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+            </div>
 
-            <label className="block text-sm font-medium">Autor:</label>
-            <input
-                type="text"
-                value={author}
-                onChange={handleAuthorChange}
-                className="w-full p-2 border rounded mb-2"
-                placeholder="Ej: Antoine de Saint-Exupéry"
-            />
+            <div>
+                <label className="block text-sm font-medium mb-1">Autor:</label>
+                <input
+                    type="text"
+                    value={author}
+                    onChange={handleAuthorChange}
+                    placeholder="Ej: Antoine de Saint-Exupéry"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+            </div>
 
-            <label className="block text-sm font-medium">Páginas:</label>
-            <input
-                type="number"
-                min="0"
-                value={pages}
-                onChange={handlePagesChange}
-                className="w-full p-2 border rounded mb-2"
-                placeholder="Ej: 150"
-            />
-            <div className="flex gap-2">
+            <div>
+                <label className="block text-sm font-medium mb-1">Páginas:</label>
+                <input
+                    type="number"
+                    min="0"
+                    value={pages}
+                    onChange={handlePagesChange}
+                    placeholder="Ej: 150"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
+                />
+            </div>
+
+            <div className="flex gap-3 mt-2">
                 {statuses.map((s) => (
-                    <label key={s} className="p-2 rounded">
+                    <label
+                        key={s}
+                        className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm cursor-pointer border 
+          ${status === s ? "bg-accent/10 border-accent text-accent" : "text-gray-600 border-gray-300"}`}
+                    >
                         <input
                             type="radio"
                             name="status"
                             value={s}
                             checked={status === s}
                             onChange={() => setStatus(s)}
-                            className="mr-2"
+                            className="hidden"
                         />
                         {s === "to read" ? "Sin Leer" : s === "reading" ? "Leyendo" : "Finalizado"}
                     </label>
                 ))}
             </div>
+
             {status === "reading" && (
-                <div className="mt-2">
-                    <label className="block text-sm font-medium">Páginas leídas:</label>
+                <div>
+                    <label className="block text-sm font-medium mb-1">Páginas leídas:</label>
                     <input
                         type="number"
                         min="0"
                         value={pagesRead}
                         onChange={handlePagesRead}
-                        className="w-full p-2 border rounded"
                         placeholder="Ej: 50"
+                        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />
                 </div>
             )}
-            <button type="submit" className="flex  justify-center  gap-1 bg-accent text-white font-semibold p-2 rounded w-full mt-2">
-                <BookHeart />
+
+            <button
+                type="submit"
+                className="flex items-center justify-center gap-2 bg-accent text-white font-medium py-2 rounded-md w-full hover:bg-accent/90 transition"
+            >
+                <BookHeart size={18} />
                 {bookToEdit ? "Actualizar libro" : "Agregar libro"}
             </button>
         </form>
+
     );
 }
