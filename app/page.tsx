@@ -8,6 +8,7 @@ import { Book, Filter, FilterBooks } from "./types/types";
 import Welcome from "./components/Welcome";
 import { BookOpen, CheckCircle, CircleFadingPlus, CircleX, Eye, SquareLibrary } from "lucide-react";
 import BookCard from "./components/BookCard";
+import Loader from "./components/Loader";
 
 const filters: Filter[] = [
   { label: "Todas", value: "all", icon: SquareLibrary },
@@ -15,7 +16,6 @@ const filters: Filter[] = [
   { label: "Leídas", value: "finished", icon: CheckCircle },
   { label: "Leyendo", value: "reading", icon: BookOpen },
 ];
-
 
 export default function Home() {
   const { user } = useAuth();
@@ -26,7 +26,7 @@ export default function Home() {
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
 
   if (loading) {
-    return <p className="text-5xl text-blue-700">Cargando...</p>;
+    return <Loader />;
   }
   if (!user) return <Welcome />;
 
@@ -61,10 +61,9 @@ export default function Home() {
               key={f.value}
               onClick={() => setFilter(f.value)}
               className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition 
-        ${filter === f.value
+              ${filter === f.value
                   ? "bg-secondary/10 text-secondary font-medium"
-                  : "text-textSecondary hover:bg-gray-100"} 
-        w-full sm:w-auto`}
+                  : "text-textSecondary hover:bg-gray-100"} w-full sm:w-auto`}
             >
               <f.icon className={`w-4 h-4 ${filter === f.value ? "text-secondary" : "text-primary"}`} />
               {f.label}

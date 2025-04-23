@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { db, auth } from "./firebaseConfig";
 import {
   collection,
@@ -57,6 +58,17 @@ const updateBookInFirestore = async (
 
   try {
     const ref = doc(db, "users", user.uid, "books", bookId);
+    // Si se está marcando como finalizado, actualizar también las páginas leídas
+    if (updatedData.status === "finished") {
+      const bookDoc = await getDoc(ref);
+      if (!bookDoc.exists()) {
+        throw new Error("El libro no existe");
+      }
+
+      const totalPages = bookDoc.data()?.pages;
+      updatedData.pagesRead = totalPages;
+      updatedData.finishedAt = Timestamp.now();
+    }
     await updateDoc(ref, updatedData);
     console.log("Libro actualizado correctamente");
   } catch (error) {

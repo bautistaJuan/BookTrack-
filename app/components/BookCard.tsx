@@ -2,8 +2,6 @@ import { useRouter } from "next/navigation";
 import { BookCardProps } from "../types/types";
 import { EllipsisVertical } from "lucide-react";
 
-
-
 export default function BookCard({
     book,
     openDropdownId,
@@ -12,7 +10,14 @@ export default function BookCard({
     deleteBookFromFirestore,
 }: BookCardProps) {
     const router = useRouter();
-    const handleRouter = (id: string) => { return router.push(`/mislibros/${id}`) }
+    const handleRouter = (id: string) => {
+        return router.push(`/mislibros/${id}`);
+    };
+
+    const progressPercentage = book.pages
+        ? Math.min((book.pagesRead / book.pages) * 100, 100)
+        : 0;
+
     return (
         <div
             key={book.id}
@@ -59,11 +64,17 @@ export default function BookCard({
 
             {/* Título y autor */}
             <div>
-                <h2 className="text-lg font-semibold text-textPrimary tracking-tight">{book.title}</h2>
+                <h2 className="text-lg font-semibold text-textPrimary tracking-tight">
+                    {book.title}
+                </h2>
                 <p className="text-sm text-textSecondary mt-1">{book.author}</p>
             </div>
-
-            {/* Estado y progreso */}
+            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                    className="h-full bg-green-500 rounded-full transition-all duration-300"
+                    style={{ width: `${progressPercentage}%` }}
+                ></div>
+            </div>
             <div className="flex items-center justify-between text-xs text-textSecondary">
                 <span className="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200">
                     {book.status === "to read"
@@ -77,6 +88,5 @@ export default function BookCard({
                 </span>
             </div>
         </div>
-
     );
 }

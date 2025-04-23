@@ -1,5 +1,6 @@
 import { LucideProps } from "lucide-react";
 import { ComponentType } from "react";
+import { Timestamp } from "firebase/firestore";
 
 export type FilterBooks = "to read" | "reading" | "finished" | "all";
 
@@ -11,6 +12,7 @@ export interface Book {
   pagesRead: number;
   status: FilterBooks;
   userId?: string;
+  finishedAt?: Timestamp;
 }
 export interface Filter {
   label: string;

@@ -5,6 +5,9 @@ import React from "react";
 import bookPort from "../../../public/book.jpeg"; // Imagen genérica
 import Link from "next/link";
 import PomodoroTimer from "@/app/components/PomodoroTimer";
+import Loader from "@/app/components/Loader";
+import { formatDate } from "@/app/utils/date";
+import { CircleChevronLeft } from "lucide-react";
 
 const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
     const resolvedParams = React.use(params);
@@ -12,7 +15,7 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
     const { book, error, loading } = useBookById(id);
     // const [increment, setIncrement] = useState(0);
     if (loading) {
-        return <h1 className="text-2xl text-blue-700">Cargando...</h1>;
+        return <Loader />;
     }
 
     if (error) {
@@ -37,58 +40,66 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
         );
     }
-    // const handleIncrement = () => {
-    //     if (increment > 0) {
-    //       incrementPagesRead(id, increment); 
-    //       setIncrement(0); 
-    //     } else {
-    //       alert("Por favor, ingresa un número válido.");
-    //     }
-    //   };
     return (
-        <div className="flex flex-col items-center p-6 min-h-screen">
+        <div className="flex flex-col items-center p-8 min-h-screen bg-neutral-50">
             <Link
                 href="/"
-                className="mb-6 text-sm text-textSecondary hover:text-accent underline transition"
+                className="flex items-center absolute top-1 left-2 text-sm text-neutral-500 hover:text-blue-500 transition"
             >
-                ← Volver al inicio
+                <CircleChevronLeft size={30} color="green" />
             </Link>
 
-            <div className="bg-white p-6 rounded-xl shadow-sm w-full max-w-md space-y-4 border">
+            <div className="w-full max-w-2xl bg-white border border-neutral-200 rounded-xl p-8 space-y-6 mt-6">
                 <Image
                     src={bookPort}
                     alt="Portada del libro"
                     width={160}
                     height={240}
-                    className="rounded-lg mx-auto"
+                    className="rounded-md mx-auto"
                 />
-                <div className="space-y-1 text-center">
-                    <h2 className="text-xl font-semibold text-textPrimary">{book.title}</h2>
-                    <p className="text-sm text-textSecondary">por {book.author}</p>
+
+                <div className="text-center space-y-1">
+                    <h2 className="text-2xl font-semibold text-neutral-900">{book.title}</h2>
+                    <p className="text-sm text-neutral-500">por {book.author}</p>
                 </div>
-                <div className="grid grid-cols-2 gap-2 text-sm text-textPrimary pt-4">
-                    <div>
-                        <strong>Páginas:</strong>
-                        <p>{book.pages}</p>
+
+                <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-sm text-neutral-800 pt-4">
+                    <div className="flex gap-2">
+                        <span className="text-neutral-500">Páginas:</span>
+                        <span>{book.pages}</span>
                     </div>
-                    <div>
-                        <strong>Leídas:</strong>
-                        <p>{book.pagesRead}</p>
+                    <div className="flex gap-2">
+                        <span className="text-neutral-500">Leídas:</span>
+                        <span>{book.pagesRead}</span>
                     </div>
-                    <div className="col-span-2">
-                        <strong>Estado:</strong>
-                        <p>
+                    <div className="flex gap-2">
+                        <span className="text-neutral-500">Estado:</span>
+                        <span>
                             {book.status === "finished"
                                 ? "Leído"
                                 : book.status === "reading"
                                     ? "Leyendo"
                                     : "Pendiente"}
-                        </p>
+                        </span>
+                    </div>
+                    <div className="col-span-2 pt-2">
+                        {book.status === "finished" && book.finishedAt && (
+                            <p className="text-sm text-neutral-500 italic">
+                                Finalizado el{" "}
+                                <span className="text-neutral-700 font-medium">
+                                    {formatDate(book.finishedAt.toDate())}
+                                </span>
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>
 
-            <PomodoroTimer onComplete={() => console.log("Pomodoro Complete!")} />
+            {book.status !== "finished" && (
+                <div className="w-full max-w-2xl mt-10">
+                    <PomodoroTimer onComplete={() => console.log("Pomodoro Complete!")} />
+                </div>
+            )}
         </div>
 
     );

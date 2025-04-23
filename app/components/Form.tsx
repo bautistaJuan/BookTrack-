@@ -71,6 +71,7 @@ export default function AddBookForm({
                 // SI EL USUARIO NO HIZO NINGUN CAMBIO, RETORNAMOS
                 if (Object.keys(updatedData).length === 0) return;
                 await updateBookInFirestore(bookToEdit.id!, updatedData);
+                closeModal(false);
                 alert("Libro actualizado exitosamente");
             } else {
                 await addBook({

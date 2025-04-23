@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 
 const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
-    const [minutes, setMinutes] = useState(25); // Valor inicial de 25 minutos
+    const [minutes, setMinutes] = useState(25);
     const [seconds, setSeconds] = useState(0);
     const [isActive, setIsActive] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
-    const [sessionDuration, setSessionDuration] = useState(25); // Duración de la sesión elegida por el usuario
+    const [sessionDuration, setSessionDuration] = useState(25);
+    const [editing, setEditing] = useState(false);
+    const [inputValue, setInputValue] = useState(sessionDuration.toString());
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -15,80 +17,122 @@ const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
                 if (seconds === 0) {
                     if (minutes === 0) {
                         clearInterval(interval);
-                        onComplete(); // Ejecuta la función cuando el Pomodoro termina
+                        onComplete();
                         setIsActive(false);
                     } else {
-                        setMinutes(minutes - 1);
+                        setMinutes(prev => prev - 1);
                         setSeconds(59);
                     }
                 } else {
-                    setSeconds(seconds - 1);
+                    setSeconds(prev => prev - 1);
                 }
             }, 1000);
         } else {
             clearInterval(interval!);
         }
 
-        return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonta
+        return () => clearInterval(interval);
     }, [isActive, minutes, seconds, onComplete]);
 
     const toggleTimer = () => {
         if (isPaused) {
-            setIsActive(true); // Reactiva el temporizador si está en pausa
+            setIsActive(true);
             setIsPaused(false);
         } else {
-            setIsActive(!isActive); // Inicia o pausa el temporizador
+            setIsActive(!isActive);
         }
     };
 
     const stopTimer = () => {
-        setIsActive(false); // Detener el temporizador
+        setIsActive(false);
         setIsPaused(false);
-        setMinutes(sessionDuration); // Reiniciar el temporizador a la duración seleccionada
+        setMinutes(sessionDuration);
         setSeconds(0);
     };
 
-    const handleSessionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newDuration = Math.max(5, Math.min(60, Number(event.target.value))); // Limitar entre 5 y 60 minutos
+    const handleEditConfirm = () => {
+        const newDuration = Math.max(5, Math.min(60, Number(inputValue)));
         setSessionDuration(newDuration);
         setMinutes(newDuration);
         setSeconds(0);
+        setEditing(false);
     };
 
-    return (
-        <div className="flex flex-col items-center">
-            <h2 className="text-lg font-semibold mb-2">Pomodoro</h2>
-            <div className="text-2xl font-bold">
-                {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
-            </div>
+    const TimerDisplay = (
+        <div
+            className="text-6xl font-bold cursor-pointer"
+            onClick={() => !isActive && setEditing(true)}
+        >
+            {editing && !isActive ? (
+                <input
+                    type="number"
+                    className="text-center w-20 bg-transparent border-b-2 border-white text-white text-4xl focus:outline-none"
+                    min={5}
+                    max={60}
+                    autoFocus
+                    value={inputValue}
+                    onChange={e => setInputValue(e.target.value)}
+                    onBlur={handleEditConfirm}
+                    onKeyDown={e => e.key === "Enter" && handleEditConfirm()}
+                />
+            ) : (
+                <>
+                    {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+                </>
+            )}
+        </div>
+    );
 
-            {/* Controles */}
-            <div className="flex gap-4 mt-2">
+    return isActive ? (
+        // 🌑 Modo Focus (Pantalla completa)
+        <div className="fixed inset-0 z-50 bg-black text-white flex flex-col items-center justify-center gap-6 transition-all">
+            <h2 className="text-2xl font-semibold">Modo Focus</h2>
+            {TimerDisplay}
+            <div className="flex gap-4">
                 <button
                     onClick={toggleTimer}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                    className="px-6 py-3 bg-blue-600 rounded-md"
                 >
-                    {isActive ? "Pausar" : isPaused ? "Reanudar" : "Iniciar"}
+                    Pausar
                 </button>
-
                 <button
                     onClick={stopTimer}
-                    className="px-4 py-2 bg-red-500 text-white rounded-md"
+                    className="px-6 py-3 bg-red-600 rounded-md"
                 >
                     Detener
                 </button>
             </div>
+        </div>
+    ) : (
+        // 🧘 Vista normal
+        <div className="flex flex-col items-center gap-4">
+            <h2 className="text-lg font-semibold">Pomodoro</h2>
+            {TimerDisplay}
 
-            {/* Selector de duración de la sesión */}
-            <div className="mt-4">
-                <label htmlFor="sessionDuration" className="mr-2">Duración de la sesión (minutos):</label>
+            <div className="flex gap-4">
+                <button
+                    onClick={toggleTimer}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                    {isPaused ? "Reanudar" : "Iniciar"}
+                </button>
+            </div>
+
+            <div className="mt-2">
+                <label htmlFor="duration" className="mr-2 text-sm">
+                    Duración (min):
+                </label>
                 <input
-                    id="sessionDuration"
+                    id="duration"
                     type="number"
                     value={sessionDuration}
-                    onChange={handleSessionChange}
-                    min="5"
-                    max="60"
+                    onChange={e => {
+                        const val = Math.max(5, Math.min(60, Number(e.target.value)));
+                        setSessionDuration(val);
+                        setInputValue(val.toString());
+                        setMinutes(val);
+                        setSeconds(0);
+                    }}
                     className="w-16 text-center border rounded-md"
                 />
             </div>
