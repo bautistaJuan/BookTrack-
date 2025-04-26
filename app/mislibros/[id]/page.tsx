@@ -13,6 +13,8 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
     const resolvedParams = React.use(params);
     const { id } = resolvedParams;
     const { book, error, loading } = useBookById(id);
+    const audioAlarm = new Audio("/mp3/alarma.mp3");
+
     // const [increment, setIncrement] = useState(0);
     if (loading) {
         return <Loader />;
@@ -40,15 +42,19 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
         );
     }
+
+    const hanldeCompleted = () => {
+        console.log("Pomodoro Complete!");
+        audioAlarm.play();
+    }
     return (
-        <div className="flex flex-col items-center p-8 min-h-screen bg-neutral-50">
+        <div className="flex flex-col items-center p-8 min-h-screen bg-background">
             <Link
                 href="/"
                 className="flex items-center absolute top-1 left-2 text-sm text-neutral-500 hover:text-blue-500 transition"
             >
-                <CircleChevronLeft size={30} color="green" />
+                <CircleChevronLeft size={30} />
             </Link>
-
             <div className="w-full max-w-2xl bg-white border border-neutral-200 rounded-xl p-8 space-y-6 mt-6">
                 <Image
                     src={bookPort}
@@ -97,7 +103,7 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
             {book.status !== "finished" && (
                 <div className="w-full max-w-2xl mt-10">
-                    <PomodoroTimer onComplete={() => console.log("Pomodoro Complete!")} />
+                    <PomodoroTimer onComplete={hanldeCompleted} />
                 </div>
             )}
         </div>

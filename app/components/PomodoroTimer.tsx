@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-
 const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
     const [minutes, setMinutes] = useState(25);
     const [seconds, setSeconds] = useState(0);
@@ -8,7 +7,6 @@ const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
     const [sessionDuration, setSessionDuration] = useState(25);
     const [editing, setEditing] = useState(false);
     const [inputValue, setInputValue] = useState(sessionDuration.toString());
-
     useEffect(() => {
         let interval: NodeJS.Timeout;
 
@@ -51,7 +49,7 @@ const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
     };
 
     const handleEditConfirm = () => {
-        const newDuration = Math.max(5, Math.min(60, Number(inputValue)));
+        const newDuration = Math.max(1, Math.min(60, Number(inputValue)));
         setSessionDuration(newDuration);
         setMinutes(newDuration);
         setSeconds(0);
@@ -66,7 +64,7 @@ const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
             {editing && !isActive ? (
                 <input
                     type="number"
-                    className="text-center w-20 bg-transparent border-b-2 border-white text-white text-4xl focus:outline-none"
+                    className="text-center w-20 bg-transparent border-b-2 text-4xl focus:outline-none"
                     min={5}
                     max={60}
                     autoFocus
@@ -84,9 +82,8 @@ const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
     );
 
     return isActive ? (
-        // 🌑 Modo Focus (Pantalla completa)
-        <div className="fixed inset-0 z-50 bg-black text-white flex flex-col items-center justify-center gap-6 transition-all">
-            <h2 className="text-2xl font-semibold">Modo Focus</h2>
+        <div className="fixed inset-0 z-50 bg-black text-white  flex flex-col items-center justify-center gap-6 transition-all">
+            <h2 className="text-2xl font-semibold">A Leer!</h2>
             {TimerDisplay}
             <div className="flex gap-4">
                 <button
@@ -104,7 +101,6 @@ const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
             </div>
         </div>
     ) : (
-        // 🧘 Vista normal
         <div className="flex flex-col items-center gap-4">
             <h2 className="text-lg font-semibold">Pomodoro</h2>
             {TimerDisplay}
@@ -116,25 +112,6 @@ const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
                 >
                     {isPaused ? "Reanudar" : "Iniciar"}
                 </button>
-            </div>
-
-            <div className="mt-2">
-                <label htmlFor="duration" className="mr-2 text-sm">
-                    Duración (min):
-                </label>
-                <input
-                    id="duration"
-                    type="number"
-                    value={sessionDuration}
-                    onChange={e => {
-                        const val = Math.max(5, Math.min(60, Number(e.target.value)));
-                        setSessionDuration(val);
-                        setInputValue(val.toString());
-                        setMinutes(val);
-                        setSeconds(0);
-                    }}
-                    className="w-16 text-center border rounded-md"
-                />
             </div>
         </div>
     );

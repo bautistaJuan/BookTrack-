@@ -41,8 +41,8 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full max-w-3xl px-4 mx-auto">
-      <header className="w-full px-4 py-3 flex items-center justify-between border-b bg-white shadow-sm">
+    <div className="w-full max-w-3xl px-4 mx-auto h-dvh">
+      <header className="w-full py-3 flex items-center justify-between border-b bg-white shadow-sm">
         <h1 className="text-lg font-medium text-textPrimary">
           Bienvenido, {user.displayName}
         </h1>
