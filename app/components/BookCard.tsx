@@ -1,11 +1,10 @@
 import { useRouter } from "next/navigation";
 import { BookCardProps } from "../types/types";
-import { EllipsisVertical } from "lucide-react";
+import BookActions from "./BooksActions";
+import { motion } from "framer-motion";
 
 export default function BookCard({
     book,
-    openDropdownId,
-    setOpenDropdownId,
     handleEditBook,
     deleteBookFromFirestore,
 }: BookCardProps) {
@@ -25,43 +24,7 @@ export default function BookCard({
             className="relative bg-white rounded-xl border shadow-sm p-6 w-full max-w-md hover:shadow-md active:scale-[0.99] transition-transform cursor-pointer flex flex-col gap-4"
         >
             {/* Botón de menú */}
-            <div className="absolute top-3 right-3">
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setOpenDropdownId(openDropdownId === book.id ? null : book.id!);
-                    }}
-                    className="p-1 hover:bg-gray-100 rounded-full"
-                >
-                    <EllipsisVertical size={20} />
-                </button>
-
-                {openDropdownId === book.id && (
-                    <div className="absolute right-0 top-10 w-36 bg-white rounded-lg shadow-lg z-10 border">
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                handleEditBook(book);
-                                setOpenDropdownId(null);
-                            }}
-                            className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
-                        >
-                            Editar
-                        </button>
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                deleteBookFromFirestore(book.id!);
-                                setOpenDropdownId(null);
-                            }}
-                            className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-100"
-                        >
-                            Eliminar
-                        </button>
-                    </div>
-                )}
-            </div>
-
+            <BookActions onEdit={() => handleEditBook(book)} onDelete={() => deleteBookFromFirestore(book.id!)} />
             {/* Título y autor */}
             <div>
                 <h2 className="text-lg font-semibold text-textPrimary tracking-tight">
@@ -70,10 +33,11 @@ export default function BookCard({
                 <p className="text-sm text-textSecondary mt-1">{book.author}</p>
             </div>
             <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div
-                    className="h-full bg-green-500 rounded-full transition-all duration-300"
-                    style={{ width: `${progressPercentage}%` }}
-                ></div>
+                <motion.div
+                    className="h-full bg-green-500 rounded-full"
+                    animate={{ width: `${progressPercentage}%` }}
+                    transition={{ duration: 0.4, ease: "easeInOut" }}
+                />
             </div>
             <div className="flex items-center justify-between text-xs text-textSecondary">
                 <span className="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200">

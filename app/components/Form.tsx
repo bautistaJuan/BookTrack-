@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { addBook, updateBookInFirestore } from "../lib/firestore";
 import { Book, FilterBooks, FormProps } from "../types/types";
-import { BookHeart } from "lucide-react";
+import { BookHeart, X } from "lucide-react";
 
 export default function AddBookForm({
-    closeModal,
+    handleCloseModal,
     bookToEdit,
 }: FormProps) {
     const [title, setTitle] = useState("");
@@ -71,8 +72,8 @@ export default function AddBookForm({
                 // SI EL USUARIO NO HIZO NINGUN CAMBIO, RETORNAMOS
                 if (Object.keys(updatedData).length === 0) return;
                 await updateBookInFirestore(bookToEdit.id!, updatedData);
-                closeModal(false);
-                alert("Libro actualizado exitosamente");
+                handleCloseModal(false);
+                // alert("Libro actualizado exitosamente");
             } else {
                 await addBook({
                     title,
@@ -81,14 +82,14 @@ export default function AddBookForm({
                     pagesRead,
                     status,
                 });
-                alert("Libro agregado exitosamente");
+                // alert("Libro agregado exitosamente");
             }
         } catch (error) {
             console.error("Error submitting form:", error);
             alert("Hubo un error al guardar el libro");
         } finally {
             resetForm();
-            closeModal(false);
+            handleCloseModal(false);
         }
     };
 
@@ -116,7 +117,17 @@ export default function AddBookForm({
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-sm w-full max-w-md space-y-4">
+        <motion.form
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-lg shadow-sm w-full max-w-md space-y-4 relative">
+            <button onClick={() => handleCloseModal(false)} className="absolute right-4 top-4 ">
+
+                <X color="gray" />
+            </button>
             <h2 className="text-xl font-semibold text-textPrimary">
                 {bookToEdit ? "Editar libro" : "Agregar un nuevo libro"}
             </h2>
@@ -196,7 +207,7 @@ export default function AddBookForm({
                 <BookHeart size={18} />
                 {bookToEdit ? "Actualizar libro" : "Agregar libro"}
             </button>
-        </form>
+        </motion.form>
 
     );
 }

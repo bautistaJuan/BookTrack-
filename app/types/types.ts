@@ -20,7 +20,7 @@ export interface Filter {
   icon: ComponentType<LucideProps>;
 }
 export interface FormProps {
-  closeModal: React.Dispatch<React.SetStateAction<boolean>>;
+  handleCloseModal: React.Dispatch<React.SetStateAction<boolean>>;
   bookToEdit?: Book | null;
 }
 export interface BooksContextType {
@@ -32,8 +32,6 @@ export interface BooksContextType {
 
 export type BookCardProps = {
   book: Book;
-  openDropdownId: string | null;
-  setOpenDropdownId: (id: string | null) => void;
   handleEditBook: (book: Book) => void;
   deleteBookFromFirestore: (id: string) => void;
 };
