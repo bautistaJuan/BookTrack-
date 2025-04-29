@@ -87,44 +87,42 @@ export default function Home() {
       </header>
 
       <main className="grow w-full">
-        {books.length > 0 ? (
-          <>
-            {/* Filtros solo si hay libros */}
-            <nav className="flex flex-wrap justify-around items-center border rounded-lg p-2 mt-4 bg-white shadow-sm">
-              {filters.map((f) => (
-                <button
-                  key={f.value}
-                  onClick={() => setFilter(f.value)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition 
-              ${filter === f.value
-                      ? "bg-secondary/10 text-secondary font-medium"
-                      : "text-textSecondary hover:bg-gray-100"} w-full sm:w-auto`}
-                >
-                  <f.icon className={`w-4 h-4 ${filter === f.value ? "text-secondary" : "text-primary"}`} />
-                  {f.label}
-                </button>
-              ))}
-            </nav>
 
-            {/* Lista de libros */}
-            <div className="w-full flex flex-col gap-4 items-start mt-4">
-              {books.map((book) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  handleEditBook={handleEditBook}
-                  deleteBookFromFirestore={deleteBookFromFirestore}
-                />
-              ))}
+        <nav className="flex flex-wrap justify-around items-center border rounded-lg p-2 mt-4 bg-white shadow-sm">
+          {filters.map((f) => (
+            <button
+              key={f.value}
+              onClick={() => setFilter(f.value)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition 
+              ${filter === f.value
+                  ? "bg-secondary/10 text-secondary font-medium"
+                  : "text-textSecondary hover:bg-gray-100"} w-full sm:w-auto`}
+            >
+              <f.icon className={`w-4 h-4 ${filter === f.value ? "text-secondary" : "text-primary"}`} />
+              {f.label}
+            </button>
+          ))}
+        </nav>
+
+        {/* Lista de libros */}
+        <div className="w-full flex flex-col gap-4 items-start mt-4">
+          {books.length > 0 ? (
+            books.map((book) => (
+              <BookCard
+                key={book.id}
+                book={book}
+                handleEditBook={handleEditBook}
+                deleteBookFromFirestore={deleteBookFromFirestore}
+              />
+            ))
+          ) : (
+            <div className="flex flex-col items-center justify-center mt-20 text-center text-textSecondary animate-fade-in">
+              <p className="text-lg font-medium">No hay libros para mostrar 📚</p>
+              <p className="text-sm mt-2">Agrega un nuevo libro o cambia el filtro seleccionado.</p>
             </div>
-          </>
-        ) : (
-          // Mensaje cuando no hay libros
-          <div className="flex flex-col items-center justify-center mt-20 text-center text-textSecondary">
-            <p className="text-lg font-medium">Aún no tienes libros guardados 📚</p>
-            <p className="text-sm mt-2">Haz clic en el botón &quot;+&quot; para agregar tu primer libro</p>
-          </div>
-        )}
+          )}
+        </div>
+
       </main>
 
 
