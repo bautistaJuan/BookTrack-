@@ -31,7 +31,6 @@ export default function Home() {
     if (user?.photoURL) {
       setPhotoProfile(user.photoURL);
     } else {
-      // En caso de que no tenga foto, podrías poner una imagen por defecto
       setPhotoProfile("/default-avatar.jpeg"); // Asegúrate de tener esta imagen en /public
     }
   }, [user]);
@@ -64,7 +63,7 @@ export default function Home() {
         <div className="relative flex flex-col items-center">
           <Image
             alt="Foto de perfil"
-            src={photoProfile}
+            src={photoProfile || "/default-avatar.jpeg"}
             width={36}
             height={36}
             className="rounded-full object-cover cursor-pointer"

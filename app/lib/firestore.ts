@@ -13,10 +13,16 @@ import {
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Book, FilterBooks } from "../types/types";
+import { Book, FilterBooks, IFormTypes } from "../types/types";
 
 // Funciones de utilidad para Firestore
-const addBook = async ({ title, author, pages, pagesRead, status }: Book) => {
+const addBook = async ({
+  title,
+  author,
+  pages,
+  pagesRead,
+  status,
+}: Book | IFormTypes) => {
   const user = auth.currentUser;
   if (!user) return;
   try {

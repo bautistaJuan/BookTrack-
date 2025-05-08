@@ -1,67 +1,72 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { addBook, updateBookInFirestore } from "../lib/firestore";
-import { Book, FilterBooks, FormProps } from "../types/types";
+import { FormProps } from "../types/types";
 import { BookHeart, X } from "lucide-react";
+import { useForm, useWatch } from "react-hook-form";
+import { IFormTypes } from "../types/types";
+
+const statuses: IFormTypes["status"][] = ["finished", "reading", "to read"];
 
 export default function AddBookForm({
     handleCloseModal,
     bookToEdit,
 }: FormProps) {
-    const [title, setTitle] = useState("");
-    const [author, setAuthor] = useState("");
-    const [pages, setPages] = useState(0);
-    const [pagesRead, setPagesRead] = useState(0);
-    const statuses: Array<"finished" | "reading" | "to read"> = [
-        "finished",
-        "reading",
-        "to read",
-    ];
-    const [status, setStatus] = useState<FilterBooks>("to read");
+    const {
+        register,
+        handleSubmit,
+        reset,
+        watch,
+        control,
+        setValue
+    } = useForm<IFormTypes>({
+        defaultValues: {
+            title: "",
+            author: "",
+            pages: 0,
+            pagesRead: 0,
+            status: "to read"
+        }
+    });
+    const selectedStatus = watch("status");
+    const status = useWatch({ control, name: "status" });
+    const pages = useWatch({ control, name: "pages" });
 
-    // Cargar datos de bookToEdit cuando cambia
     useEffect(() => {
+        if (status === "to read") {
+            setValue("pagesRead", 0);
+        } else if (status === "finished") {
+            setValue("pagesRead", pages || 0);
+        }
+    }, [status, pages, setValue]);
+    useEffect(() => {
+
         if (bookToEdit) {
-            setTitle(bookToEdit.title);
-            setAuthor(bookToEdit.author);
-            setPages(bookToEdit.pages);
-            setPagesRead(bookToEdit.pagesRead);
-            setStatus(bookToEdit.status);
+            reset({
+                title: bookToEdit.title,
+                author: bookToEdit.author,
+                pages: bookToEdit.pages,
+                pagesRead: bookToEdit.pagesRead,
+                status: bookToEdit.status
+            });
         } else {
-            resetForm();
+            reset();
         }
-    }, [bookToEdit]);
+    }, [bookToEdit, reset]);
 
-    const resetForm = () => {
-        setTitle("");
-        setAuthor("");
-        setPages(0);
-        setPagesRead(0);
-        setStatus("to read");
-    };
+    const onSubmit = async (data: IFormTypes) => {
+        const { title, author, pages, pagesRead, status } = data;
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        // VALIDACIONES ANTES DE HACER CUALQUIER COSA
-        if (!title.trim() || !author.trim() || pages <= 0) {
-            alert("Verifica bien los datos antes de enviar el formulario");
-            return;
-        }
+        // VALIDACIONES EXTRA
         if (status === "reading" && pagesRead > pages) {
-            alert("Las páginas leídas no pueden ser mayores que el total de páginas.");
+            alert("Las páginas leídas no pueden ser mayores que el total.");
             return;
         }
-        if (isNaN(pages) || isNaN(pagesRead)) {
-            alert("Los valores de las páginas deben ser números válidos.");
-            return;
-        }
-        // MANEJO DE ACCIONES
+
         try {
-            // CONDICIÓN PARA SABER SI DEBEMOS EDITAR O ACTUALIZAR
             if (bookToEdit) {
-                // VAMOS A GUARDAR SOLAMENTE LOS CAMPOS EDITADOS EN ESTE OBJ
-                const updatedData: Partial<Book> = {};
+                const updatedData: Partial<IFormTypes> = {};
 
                 if (title !== bookToEdit.title) updatedData.title = title;
                 if (author !== bookToEdit.author) updatedData.author = author;
@@ -69,52 +74,20 @@ export default function AddBookForm({
                 if (pagesRead !== bookToEdit.pagesRead) updatedData.pagesRead = pagesRead;
                 if (status !== bookToEdit.status) updatedData.status = status;
 
-                // SI EL USUARIO NO HIZO NINGUN CAMBIO, RETORNAMOS
                 if (Object.keys(updatedData).length === 0) return;
                 await updateBookInFirestore(bookToEdit.id!, updatedData);
-                handleCloseModal(false);
-                // alert("Libro actualizado exitosamente");
             } else {
-                await addBook({
-                    title,
-                    author,
-                    pages,
-                    pagesRead,
-                    status,
-                });
-                // alert("Libro agregado exitosamente");
+                await addBook(data);
             }
         } catch (error) {
-            console.error("Error submitting form:", error);
-            alert("Hubo un error al guardar el libro");
+            console.error("Error al guardar el libro:", error);
+            alert("Hubo un error al guardar el libro.");
         } finally {
-            resetForm();
+            reset();
             handleCloseModal(false);
         }
     };
 
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.target.value);
-    };
-    const handleAuthorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setAuthor(e.target.value);
-    };
-    const handlePagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value, 10);
-        if (value < 0) {
-            alert("No se pueden ingresar valores negativos.");
-            return;
-        }
-        setPages(value);
-    };
-    const handlePagesRead = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseInt(e.target.value, 10);
-        if (value < 0) {
-            alert("No se pueden ingresar valores negativos.");
-            return;
-        }
-        setPagesRead(value);
-    };
 
     return (
         <motion.form
@@ -122,7 +95,7 @@ export default function AddBookForm({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="bg-white p-6 rounded-lg shadow-sm w-full max-w-md space-y-4 relative">
             <button onClick={() => handleCloseModal(false)} className="absolute right-4 top-4 ">
 
@@ -135,9 +108,7 @@ export default function AddBookForm({
             <div>
                 <label className="block text-sm font-medium mb-1">Título:</label>
                 <input
-                    type="text"
-                    value={title}
-                    onChange={handleTitleChange}
+                    {...register("title", { required: "Este campo es obligatorio" })}
                     placeholder="Ej: El principito"
                     className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
@@ -147,8 +118,7 @@ export default function AddBookForm({
                 <label className="block text-sm font-medium mb-1">Autor:</label>
                 <input
                     type="text"
-                    value={author}
-                    onChange={handleAuthorChange}
+                    {...register("author", { required: "Este campo es obligatorio" })}
                     placeholder="Ej: Antoine de Saint-Exupéry"
                     className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
@@ -158,27 +128,25 @@ export default function AddBookForm({
                 <label className="block text-sm font-medium mb-1">Páginas:</label>
                 <input
                     type="number"
-                    min="0"
-                    value={pages}
-                    onChange={handlePagesChange}
+                    min="1"
+                    {...register("pages", { valueAsNumber: true })}
                     placeholder="Ej: 150"
                     className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
                 />
             </div>
 
             <div className="flex gap-3 mt-2">
+
                 {statuses.map((s) => (
                     <label
                         key={s}
                         className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm cursor-pointer border 
-          ${status === s ? "bg-accent/10 border-accent text-accent" : "text-gray-600 border-gray-300"}`}
+      ${selectedStatus === s ? "bg-accent/10 border-accent text-accent" : "text-gray-600 border-gray-300"}`}
                     >
                         <input
                             type="radio"
-                            name="status"
                             value={s}
-                            checked={status === s}
-                            onChange={() => setStatus(s)}
+                            {...register("status")}
                             className="hidden"
                         />
                         {s === "to read" ? "Sin Leer" : s === "reading" ? "Leyendo" : "Finalizado"}
@@ -186,14 +154,13 @@ export default function AddBookForm({
                 ))}
             </div>
 
-            {status === "reading" && (
+            {selectedStatus === "reading" && (
                 <div>
                     <label className="block text-sm font-medium mb-1">Páginas leídas:</label>
                     <input
                         type="number"
-                        min="0"
-                        value={pagesRead}
-                        onChange={handlePagesRead}
+                        min="1"
+                        {...register("pagesRead", { valueAsNumber: true })}
                         placeholder="Ej: 50"
                         className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-accent/50"
                     />

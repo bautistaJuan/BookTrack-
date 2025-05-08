@@ -35,3 +35,11 @@ export type BookCardProps = {
   handleEditBook: (book: Book) => void;
   deleteBookFromFirestore: (id: string) => void;
 };
+
+export interface IFormTypes {
+  title: string;
+  author: string;
+  pages: number;
+  status: FilterBooks;
+  pagesRead: number;
+}
