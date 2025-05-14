@@ -1,23 +1,24 @@
-# 📚 App de Seguimiento de Lectura
+## 📚 Reading Tracker App
+A minimalist web application to log, organize, and track your reading progress. Add books, update your progress, mark them as read or pending, and stay motivated on your reading journey!
 
-Una aplicación web minimalista para registrar, organizar y hacer seguimiento de tus lecturas. Agrega libros, actualiza tu progreso, marca como leído o pendiente, ¡y mantené viva tu motivación lectora!
+### ✨ Features
+- Add books with title, author, and total page count
 
----
+- Update reading status: Not Started, Reading, Finished
 
-## ✨ Funcionalidades
+- Track how many pages you've read
 
-- Agregar libros con título, autor y número de páginas
-- Cambiar el estado de lectura: `Sin Leer`, `Leyendo`, `Finalizado`
-- Registrar cuántas páginas llevás leídas
-- Edición y eliminación de libros
-- Sincronización en tiempo real con Firebase
+- Edit and delete books
 
----
+- Real-time synchronization with Firebase
 
-## 🛠️ Tecnologías
+### 🛠️ Tech Stack
+- Next.js – React framework for modern web applications
 
-- **Next.js** – Framework React para aplicaciones modernas
-- **Tailwind CSS** – Utilidades para un diseño limpio y responsive
-- **React Hook Form** – Manejo eficiente y simple de formularios
-- **Firebase** – Backend para persistencia de datos
-- **Framer Motion** – Animaciones suaves y atractivas
+- Tailwind CSS – Utility-first CSS for clean, responsive design
+
+- React Hook Form – Simple and efficient form management
+
+- Firebase – Backend services for real-time data persistence
+
+- Framer Motion – Smooth and visually appealing animations
