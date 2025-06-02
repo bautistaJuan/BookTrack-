@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 📚 Reading Tracker App
+A minimalist web application to log, organize, and track your reading progress. Add books, update your progress, mark them as read or pending, and stay motivated on your reading journey!
 
-## Getting Started
+### ✨ Features
+- Add books with title, author, and total page count
 
-First, run the development server:
+- Update reading status: Not Started, Reading, Finished
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Track how many pages you've read
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Edit and delete books
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Real-time synchronization with Firebase
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 🛠️ Tech Stack
+- Next.js – React framework for modern web applications
 
-## Learn More
+- Tailwind CSS – Utility-first CSS for clean, responsive design
 
-To learn more about Next.js, take a look at the following resources:
+- React Hook Form – Simple and efficient form management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Firebase – Backend services for real-time data persistence
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Framer Motion – Smooth and visually appealing animations
