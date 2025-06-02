@@ -43,6 +43,8 @@ export default function AddBookForm({
     useEffect(() => {
 
         if (bookToEdit) {
+            // SI SELECCIONAS LA OPCION "EDITAR LIBRO"
+            // EL FORM SE RESETEA CON LOS VALORES DE ESE BOOK ACTUAL
             reset({
                 title: bookToEdit.title,
                 author: bookToEdit.author,

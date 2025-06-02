@@ -87,7 +87,7 @@ export default function Home() {
 
       <main className="grow w-full">
 
-        <nav className="flex flex-wrap justify-around items-center border rounded-lg p-2 mt-4 bg-white shadow-sm">
+        <nav className="flex flex-wrap justify-around items-center gap-4 border rounded-lg p-2 mt-4">
           {filters.map((f) => (
             <button
               key={f.value}
