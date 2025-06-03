@@ -3,21 +3,14 @@ import { logOut } from "./lib/auth";
 import { useState, useEffect } from "react";
 import { deleteBookFromFirestore, useBooksByUser } from "./lib/firestore";
 import { useAuth } from "./context/AuthContext";
-import { Book, Filter, FilterBooks } from "./types/types";
+import { Book, FilterBooks } from "./types/types";
 import Welcome from "./components/Welcome";
-import { BookOpen, CheckCircle, CircleFadingPlus, Eye, LogOut, SquareLibrary } from "lucide-react";
 import BookCard from "./components/Book/BookCard";
 import Loader from "./components/Loader";
 import Image from "next/image";
 import FiltersCard from "./components/Book/FiltersCard";
 import AddBookForm from "./components/Form/Form";
-
-const filters: Filter[] = [
-  { label: "Todas", value: "all", icon: SquareLibrary },
-  { label: "Pendiente", value: "to read", icon: Eye },
-  { label: "Leídas", value: "finished", icon: CheckCircle },
-  { label: "Leyendo", value: "reading", icon: BookOpen },
-];
+import { CircleFadingPlus, LogOut } from "lucide-react";
 
 export default function Home() {
   const { user } = useAuth();
@@ -86,20 +79,16 @@ export default function Home() {
         </button>
       </header>
 
-      <main className="flex w-full">
+      <main className="sm:flex w-full">
         <div className="grid">
-          {filters.map((f) => (
-            <FiltersCard
-              key={f.value}
-              selectFilter={() => setFilter(f.value)}
-            >
-              <f.icon />
-              {f.label}
-            </FiltersCard>
-          ))}
+          <FiltersCard
+            selectFilter={setFilter}
+            currentFilter={filter}
+          >
+          </FiltersCard>
         </div>
         {/* Lista de libros */}
-        <div className="w-full flex flex-col gap-4 items-start mt-4">
+        <div className="w-full flex flex-col mt-4 items-center">
           {books.length > 0 ? (
             books.map((book) => (
               <BookCard

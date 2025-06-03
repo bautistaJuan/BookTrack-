@@ -1,7 +1,6 @@
 import { LucideProps } from "lucide-react";
-import { ComponentType } from "react";
+import { ComponentType, Dispatch, SetStateAction } from "react";
 import { Timestamp } from "firebase/firestore";
-import { ReactNode } from "react";
 
 export type FilterBooks = "to read" | "reading" | "finished" | "all";
 
@@ -46,8 +45,6 @@ export interface IFormTypes {
 }
 
 export type FilterCardProps = {
-  children: ReactNode;
-  selectFilter: () => void;
-  key: FilterBooks;
-  // filter: FilterBooks
+  selectFilter: Dispatch<SetStateAction<FilterBooks>>;
+  currentFilter: FilterBooks;
 };

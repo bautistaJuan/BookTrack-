@@ -1,27 +1,31 @@
 import { motion } from "framer-motion";
 import { FilterCardProps } from "../../types/types";
+import { filters } from "@/app/utils/utils";
+export default function FiltersCard({ selectFilter, currentFilter }: FilterCardProps) {
 
-export default function FiltersCard({ children, selectFilter }: FilterCardProps) {
+    const box = {
+        width: 80,
+        height: 80,
+        borderRadius: 5,
+    }
     return (
-        <motion.div
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.8 }}
-            style={box}
-            className="cursor-pointer w-full"
-            onClick={() => selectFilter()}
-        >
-            {children}
+        <motion.div>
+            {filters.map((f) =>
+            (
+                <motion.div
+                    key={f.value}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.8 }}
+                    style={box}
+                    className={`flex items-center flex-col justify-center mb-1 cursor-pointer text-center ${currentFilter == f.value ? "text-red-500" : "text-blue-600"}`}
+                    onClick={() => selectFilter(f.value)}
+                >
+                    <f.icon />
+                    {f.label}
+                </motion.div>
+            )
+            )}
         </motion.div>
-    )
+    );
 }
 
-/**
- * ==============   Styles   ================
- */
-
-const box = {
-    width: 100,
-    height: 100,
-    backgroundColor: "#11ffa8",
-    borderRadius: 5,
-}
