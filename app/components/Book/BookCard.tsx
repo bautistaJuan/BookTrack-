@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
-import { BookCardProps } from "../types/types";
+import { BookCardProps } from "../../types/types";
 import BookActions from "./BooksActions";
 import { motion } from "framer-motion";
+import { getPorcentajeBook } from "@/app/utils/utils";
 
 export default function BookCard({
     book,
@@ -12,10 +13,7 @@ export default function BookCard({
     const handleRouter = (id: string) => {
         return router.push(`/mislibros/${id}`);
     };
-
-    const progressPercentage = book.pages
-        ? Math.min((book.pagesRead / book.pages) * 100, 100)
-        : 0;
+    const getPorcentaje = getPorcentajeBook(book);
 
     return (
         <div
@@ -23,7 +21,7 @@ export default function BookCard({
             onClick={() => handleRouter(book.id!)}
             className="relative bg-white rounded-xl border shadow-sm p-6 w-full max-w-md hover:shadow-md active:scale-[0.99] transition-transform cursor-pointer flex flex-col gap-4"
         >
-            {/* Botón de menú */}
+            {/* Book Actions */}
             <BookActions onEdit={() => handleEditBook(book)} onDelete={() => deleteBookFromFirestore(book.id!)} />
             {/* Título y autor */}
             <div>
@@ -32,13 +30,15 @@ export default function BookCard({
                 </h2>
                 <p className="text-sm text-textSecondary mt-1">{book.author}</p>
             </div>
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            {/* Barra Progreso */}
+            <div className="w-fqull h-2 bg-gray-200 rounded-full overflow-hidden">
                 <motion.div
                     className="h-full bg-green-500 rounded-full"
-                    animate={{ width: `${progressPercentage}%` }}
+                    animate={{ width: `${getPorcentaje}%` }}
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                 />
             </div>
+            {/* Status */}
             <div className="flex items-center justify-between text-xs text-textSecondary">
                 <span className="px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200">
                     {book.status === "to read"

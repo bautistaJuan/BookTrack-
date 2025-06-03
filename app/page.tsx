@@ -1,5 +1,4 @@
 "use client";
-import AddBookForm from "./components/Form";
 import { logOut } from "./lib/auth";
 import { useState, useEffect } from "react";
 import { deleteBookFromFirestore, useBooksByUser } from "./lib/firestore";
@@ -7,9 +6,11 @@ import { useAuth } from "./context/AuthContext";
 import { Book, Filter, FilterBooks } from "./types/types";
 import Welcome from "./components/Welcome";
 import { BookOpen, CheckCircle, CircleFadingPlus, Eye, LogOut, SquareLibrary } from "lucide-react";
-import BookCard from "./components/BookCard";
+import BookCard from "./components/Book/BookCard";
 import Loader from "./components/Loader";
 import Image from "next/image";
+import FiltersCard from "./components/Book/FiltersCard";
+import AddBookForm from "./components/Form/Form";
 
 const filters: Filter[] = [
   { label: "Todas", value: "all", icon: SquareLibrary },
@@ -58,8 +59,8 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full max-w-3xl px-4 mx-auto h-dvh">
-      <header className="w-full py-3 flex items-center justify-between border-b bg-white shadow-sm">
+    <div className="w-full p-3 max-w-3xl h-dvh">
+      <header className="w-full flex items-center justify-between border-b bg-white shadow-sm mb-4">
         <div className="relative flex flex-col items-center">
           <Image
             alt="Foto de perfil"
@@ -85,24 +86,18 @@ export default function Home() {
         </button>
       </header>
 
-      <main className="grow w-full">
-
-        <nav className="flex flex-wrap justify-around items-center gap-4 border rounded-lg p-2 mt-4">
+      <main className="flex w-full">
+        <div className="grid">
           {filters.map((f) => (
-            <button
+            <FiltersCard
               key={f.value}
-              onClick={() => setFilter(f.value)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition 
-              ${filter === f.value
-                  ? "bg-secondary/10 text-secondary font-medium"
-                  : "text-textSecondary hover:bg-gray-100"} w-full sm:w-auto`}
+              selectFilter={() => setFilter(f.value)}
             >
-              <f.icon className={`w-4 h-4 ${filter === f.value ? "text-secondary" : "text-primary"}`} />
+              <f.icon />
               {f.label}
-            </button>
+            </FiltersCard>
           ))}
-        </nav>
-
+        </div>
         {/* Lista de libros */}
         <div className="w-full flex flex-col gap-4 items-start mt-4">
           {books.length > 0 ? (
@@ -121,7 +116,6 @@ export default function Home() {
             </div>
           )}
         </div>
-
       </main>
 
 

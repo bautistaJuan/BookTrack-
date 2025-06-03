@@ -1,3 +1,5 @@
+import { Book } from "../types/types";
+
 export function formatDate(date?: Date | null): string {
   if (!date) return "";
 
@@ -7,3 +9,6 @@ export function formatDate(date?: Date | null): string {
     year: "numeric",
   });
 }
+export const getPorcentajeBook = (book: Book) => {
+  return book.pages ? Math.min((book.pagesRead / book.pages) * 100, 100) : 0;
+};
