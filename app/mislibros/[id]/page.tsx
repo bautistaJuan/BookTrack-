@@ -6,11 +6,11 @@ import { deleteBookFromFirestore, useBookById } from "@/app/lib/firestore";
 import bookPort from "../../../public/book.jpeg"; // Imagen genérica
 import PomodoroTimer from "@/app/components/PomodoroTimer";
 import Loader from "@/app/components/Loader";
-import { formatDate } from "@/app/utils/date";
+import { formatDate } from "@/app/utils/utils";
 import { CircleChevronLeft } from "lucide-react";
-import BookActions from "@/app/components/BooksActions";
+import BookActions from "@/app/components/Book/BooksActions";
 import { Book } from "@/app/types/types";
-import AddBookForm from "@/app/components/Form";
+import AddBookForm from "@/app/components/Form/Form";
 import ErrorPage from "@/app/components/ErrorPage";
 
 const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {

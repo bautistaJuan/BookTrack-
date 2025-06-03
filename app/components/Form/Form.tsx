@@ -1,11 +1,11 @@
 "use client";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { addBook, updateBookInFirestore } from "../lib/firestore";
-import { FormProps } from "../types/types";
+import { addBook, updateBookInFirestore } from "../../lib/firestore";
+import { FormProps } from "../../types/types";
 import { BookHeart, X } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
-import { IFormTypes } from "../types/types";
+import { IFormTypes } from "../../types/types";
 
 const statuses: IFormTypes["status"][] = ["finished", "reading", "to read"];
 
