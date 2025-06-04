@@ -19,7 +19,7 @@ export default function BookCard({
         <div
             key={book.id}
             onClick={() => handleRouter(book.id!)}
-            className="relative bg-white rounded-xl border shadow-sm p-6 w-full max-w-md hover:shadow-md active:scale-[0.99] transition-transform cursor-pointer flex flex-col gap-4"
+            className="relative h-fit bg-white rounded-xl border shadow-sm p-6 w-full max-w-md hover:shadow-md active:scale-[0.99] transition-transform cursor-pointer flex flex-col gap-4 "
         >
             {/* Book Actions */}
             <BookActions onEdit={() => handleEditBook(book)} onDelete={() => deleteBookFromFirestore(book.id!)} />

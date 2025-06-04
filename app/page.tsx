@@ -52,7 +52,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full p-3 max-w-3xl h-dvh">
+    <div className="w-full p-3 h-dvh ">
       <header className="w-full flex items-center justify-between border-b bg-white shadow-sm mb-4">
         <div className="relative flex flex-col items-center">
           <Image
@@ -79,16 +79,14 @@ export default function Home() {
         </button>
       </header>
 
-      <main className="sm:flex w-full">
-        <div className="grid">
-          <FiltersCard
-            selectFilter={setFilter}
-            currentFilter={filter}
-          >
-          </FiltersCard>
-        </div>
+      <main className="sm:flex sm:gap-2 w-full">
+        <FiltersCard
+          selectFilter={setFilter}
+          currentFilter={filter}
+        >
+        </FiltersCard>
         {/* Lista de libros */}
-        <div className="w-full flex flex-col mt-4 items-center">
+        <div className="flex flex-col flex-grow gap-4 sm:grid sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
           {books.length > 0 ? (
             books.map((book) => (
               <BookCard
@@ -99,7 +97,7 @@ export default function Home() {
               />
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center mt-20 text-center text-textSecondary animate-fade-in">
+            <div className="flex flex-col items-center justify-center mt-20 text-center text-textSecondary animate-fade-in col-span-full">
               <p className="text-lg font-medium">No hay libros para mostrar 📚</p>
               <p className="text-sm mt-2">Agrega un nuevo libro o cambia el filtro seleccionado.</p>
             </div>
