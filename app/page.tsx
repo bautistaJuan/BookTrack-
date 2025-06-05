@@ -1,22 +1,16 @@
 "use client";
-import AddBookForm from "./components/Form";
 import { logOut } from "./lib/auth";
 import { useState, useEffect } from "react";
 import { deleteBookFromFirestore, useBooksByUser } from "./lib/firestore";
 import { useAuth } from "./context/AuthContext";
-import { Book, Filter, FilterBooks } from "./types/types";
+import { Book, FilterBooks } from "./types/types";
 import Welcome from "./components/Welcome";
-import { BookOpen, CheckCircle, CircleFadingPlus, Eye, LogOut, SquareLibrary } from "lucide-react";
-import BookCard from "./components/BookCard";
+import BookCard from "./components/Book/BookCard";
 import Loader from "./components/Loader";
 import Image from "next/image";
-
-const filters: Filter[] = [
-  { label: "Todas", value: "all", icon: SquareLibrary },
-  { label: "Pendiente", value: "to read", icon: Eye },
-  { label: "Leídas", value: "finished", icon: CheckCircle },
-  { label: "Leyendo", value: "reading", icon: BookOpen },
-];
+import FiltersCard from "./components/Book/FiltersCard";
+import AddBookForm from "./components/Form/Form";
+import { CircleFadingPlus, LogOut } from "lucide-react";
 
 export default function Home() {
   const { user } = useAuth();
@@ -58,8 +52,8 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full max-w-3xl px-4 mx-auto h-dvh">
-      <header className="w-full py-3 flex items-center justify-between border-b bg-white shadow-sm">
+    <div className="w-full p-3 h-dvh ">
+      <header className="w-full flex items-center justify-between border-b bg-white shadow-sm mb-4">
         <div className="relative flex flex-col items-center">
           <Image
             alt="Foto de perfil"
@@ -85,26 +79,14 @@ export default function Home() {
         </button>
       </header>
 
-      <main className="grow w-full">
-
-        <nav className="flex flex-wrap justify-around items-center gap-4 border rounded-lg p-2 mt-4">
-          {filters.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => setFilter(f.value)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition 
-              ${filter === f.value
-                  ? "bg-secondary/10 text-secondary font-medium"
-                  : "text-textSecondary hover:bg-gray-100"} w-full sm:w-auto`}
-            >
-              <f.icon className={`w-4 h-4 ${filter === f.value ? "text-secondary" : "text-primary"}`} />
-              {f.label}
-            </button>
-          ))}
-        </nav>
-
+      <main className="sm:flex sm:gap-2 w-full">
+        <FiltersCard
+          selectFilter={setFilter}
+          currentFilter={filter}
+        >
+        </FiltersCard>
         {/* Lista de libros */}
-        <div className="w-full flex flex-col gap-4 items-start mt-4">
+        <div className="flex flex-col flex-grow gap-4 sm:grid sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
           {books.length > 0 ? (
             books.map((book) => (
               <BookCard
@@ -115,13 +97,12 @@ export default function Home() {
               />
             ))
           ) : (
-            <div className="flex flex-col items-center justify-center mt-20 text-center text-textSecondary animate-fade-in">
+            <div className="flex flex-col items-center justify-center mt-20 text-center text-textSecondary animate-fade-in col-span-full">
               <p className="text-lg font-medium">No hay libros para mostrar 📚</p>
               <p className="text-sm mt-2">Agrega un nuevo libro o cambia el filtro seleccionado.</p>
             </div>
           )}
         </div>
-
       </main>
 
 
