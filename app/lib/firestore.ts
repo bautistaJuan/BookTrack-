@@ -81,34 +81,34 @@ const updateBookInFirestore = async (
     console.error("Error al actualizar el libro:", error);
   }
 };
-const incrementPagesRead = async (bookId: string, increment: number) => {
-  const user = auth.currentUser;
-  if (!user) {
-    throw new Error("No user is logged in");
-  }
+// const incrementPagesRead = async (bookId: string, increment: number) => {
+//   const user = auth.currentUser;
+//   if (!user) {
+//     throw new Error("No user is logged in");
+//   }
 
-  try {
-    const ref = doc(db, "users", user.uid, "books", bookId);
-    // Obtener el documento actual
-    const bookDoc = await getDoc(ref);
+//   try {
+//     const ref = doc(db, "users", user.uid, "books", bookId);
+//     // Obtener el documento actual
+//     const bookDoc = await getDoc(ref);
 
-    if (!bookDoc.exists()) {
-      throw new Error("El libro no existe");
-    }
+//     if (!bookDoc.exists()) {
+//       throw new Error("El libro no existe");
+//     }
 
-    // Obtener las páginas leídas actuales
-    const currentPagesRead = bookDoc.data()?.pagesRead || 0;
+//     // Obtener las páginas leídas actuales
+//     const currentPagesRead = bookDoc.data()?.pagesRead || 0;
 
-    // Actualizar el valor de 'pagesRead'
-    await updateDoc(ref, {
-      pagesRead: currentPagesRead + increment,
-    });
+//     // Actualizar el valor de 'pagesRead'
+//     await updateDoc(ref, {
+//       pagesRead: currentPagesRead + increment,
+//     });
 
-    console.log("Páginas leídas actualizadas correctamente");
-  } catch (error) {
-    console.error("Error al actualizar las páginas leídas:", error);
-  }
-};
+//     console.log("Páginas leídas actualizadas correctamente");
+//   } catch (error) {
+//     console.error("Error al actualizar las páginas leídas:", error);
+//   }
+// };
 
 // Hooks relacionados con Firestore
 const useBooksByUser = (filter: FilterBooks = "all") => {
@@ -175,5 +175,5 @@ export {
   useBookById,
   deleteBookFromFirestore,
   updateBookInFirestore,
-  incrementPagesRead,
+  // incrementPagesRead,
 };

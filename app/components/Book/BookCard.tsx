@@ -3,11 +3,11 @@ import { BookCardProps } from "../../types/types";
 import BookActions from "./BooksActions";
 import { motion } from "framer-motion";
 import { getPorcentajeBook, getTagColor } from "@/app/utils/utils";
+import { deleteBookFromFirestore } from "@/app/lib/firestore";
 
 export default function BookCard({
     book,
     handleEditBook,
-    deleteBookFromFirestore,
 }: BookCardProps) {
     const router = useRouter();
     const handleRouter = (id: string) => {
