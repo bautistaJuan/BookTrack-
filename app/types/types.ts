@@ -33,7 +33,6 @@ export interface BooksContextType {
 export type BookCardProps = {
   book: Book;
   handleEditBook: (book: Book) => void;
-  deleteBookFromFirestore: (id: string) => void;
 };
 
 export interface IFormTypes {

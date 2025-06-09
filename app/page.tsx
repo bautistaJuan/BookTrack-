@@ -27,13 +27,14 @@ export default function Home() {
     }
   }, [user]);
 
+
+  if (loading) return <Loader />;
+  if (!user) return <Welcome />;
+
   const handlePhotoClick = () => {
     setShowGreeting(true);
     setTimeout(() => setShowGreeting(false), 2000);
   };
-
-  if (loading) return <Loader />;
-  if (!user) return <Welcome />;
 
   const handleEditBook = (book: Book) => {
     setBookToEdit(book);
@@ -58,11 +59,11 @@ export default function Home() {
             className="rounded-full object-cover cursor-pointer"
             onClick={handlePhotoClick}
           />
-          {showGreeting && (
+          {showGreeting &&
             <div className="absolute top-full mt-2 left-5 bg-secondary px-3 py-2 rounded-md shadow-md text-sm text-white min-w-[200px]">
               Hola, <span className="font-bold">{user.displayName}</span>
             </div>
-          )}
+          }
         </div>
         <button
           onClick={logOut}
