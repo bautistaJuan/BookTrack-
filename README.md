@@ -118,7 +118,7 @@ npm run dev
 
 ```bash
 # Clone the repository
-git clone https://github.com/tu-usuario/booktrack.git
+git clone [https://github.com/tu-usuario/BookTrack-.git
 
 # Install dependencies
 npm install
