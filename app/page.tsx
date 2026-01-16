@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useBooksByUser } from "./lib/firestore";
 import { useAuth } from "./context/AuthContext";
 import { Book, FilterBooks } from "./types/types";
-import Welcome from "./components/Welcome";
+import Welcome from "./components/Welcome/Welcome";
 import Loader from "./components/Loader";
 import Image from "next/image";
 import FiltersCard from "./components/Book/FiltersCard";

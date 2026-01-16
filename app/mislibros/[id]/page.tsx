@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { deleteBookFromFirestore, updateBookInFirestore, useBookById } from "@/app/lib/firestore";
-import bookPort from "../../../public/book.jpeg"; // Imagen genérica
+import bookPort from "@public/book.jpeg"; // Imagen genérica
 import PomodoroTimer from "@/app/components/PomodoroTimer";
 import Loader from "@/app/components/Loader";
 import { formatDate } from "@/app/utils/utils";
