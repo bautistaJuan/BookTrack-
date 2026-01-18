@@ -5,7 +5,7 @@ import { Play, Pause, RotateCcw, Timer, X } from "lucide-react";
 
 type TimerState = 'idle' | 'running' | 'paused';
 
-const PomodoroTimer = ({ onComplete }: { onComplete: () => void }) => {
+const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) => {
     const [minutes, setMinutes] = useState(25);
     const [seconds, setSeconds] = useState(0);
     const [timerState, setTimerState] = useState<TimerState>('idle');

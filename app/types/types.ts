@@ -1,5 +1,5 @@
-// types/types.ts
 import { Timestamp } from "firebase/firestore";
+import { LucideIcon } from "lucide-react";
 
 /**
  * Valid reading statuses for a book
@@ -67,10 +67,29 @@ export interface IFormTypes {
 // UI Component Props
 export interface FormProps {
     handleCloseModal: (status: boolean) => void;
-    bookToEdit?: Book;
+    bookToEdit?: Book | null;
 }
 
 export interface BookCardProps {
     book: Book;
     handleEditBook: (book: Book) => void;
 }
+
+export interface BookListProps {
+    books: Book[];
+    handleEditBook: (book: Book) => void;
+    loading?: boolean;
+}
+
+export interface Filter {
+    label: string;
+    value: FilterBooks;
+    icon: LucideIcon;
+}
+
+export interface FilterCardProps {
+    selectFilter: (filter: FilterBooks) => void;
+    currentFilter: FilterBooks;
+}
+
+

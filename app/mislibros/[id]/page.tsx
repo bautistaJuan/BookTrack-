@@ -222,7 +222,7 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                                 <Clock size={20} className="text-primary-500" />
                                 Sesión de Lectura
                             </h3>
-                            <PomodoroTimer audioAlarm={audioAlarm} />
+                            <PomodoroTimer onComplete={() => audioAlarm.current?.play()} />
                         </section>
                     </div>
                 </div>

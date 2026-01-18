@@ -1,10 +1,13 @@
 import { BookOpen, CheckCircle, Eye, SquareLibrary } from "lucide-react";
 import { Book, Filter } from "../types/types";
+import { Timestamp } from "firebase/firestore";
 
-export function formatDate(date?: Date | null): string {
+export function formatDate(date?: Date | Timestamp | null): string {
   if (!date) return "";
 
-  return date.toLocaleDateString("es-AR", {
+  const dateObj = date instanceof Timestamp ? date.toDate() : date;
+
+  return dateObj.toLocaleDateString("es-AR", {
     day: "2-digit",
     month: "long",
     year: "numeric",
