@@ -1,143 +1,119 @@
-## 📚 Reading Tracker App
+# 📚 BookTrack: Tu Compañero de Lectura Inteligente
 
-A minimalist web application to log, organize, and track your reading progress. Add books, update your progress, mark them as read or pending, and stay motivated on your reading journey!
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://book-tracker-fawn.vercel.app/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-> ⚠️ **Stop wasting time and go try it out → [Visit the app here 🚀](https://book-tracker-fawn.vercel.app/)**
+**BookTrack** es una aplicación web minimalista y potente diseñada para transformar la forma en que gestionas tu hábito de lectura. Organiza tu biblioteca personal, monitorea tu progreso en tiempo real y mantén el enfoque con herramientas integradas de productividad.
 
-## 📑 Table of Contents
-
-- [📚 Project Features](#📚-project-features)
-  - [1. Book Management](#1-book-management)
-  - [2. Progress Tracking 📊](#2-progress-tracking-📊)
-  - [3. Pomodoro Timer ⏱️](#3-pomodoro-timer-⏱️)
-  - [4. Authentication 🔐](#4-authentication-🔐)
-  - [5. Organization 📑](#5-organization-📑)
-  - [6. User Interface 🎨](#6-user-interface-🎨)
-- [🛠️ Technical Details](#technical-details-🛠️)
-- [🤝 Contributing](#contributing-🤝)
-
-## 📚 Project Features
-
-### 1. Book Management
-
-Allows adding books with the following information:
-
-- Title
-- Author
-- Total number of pages
-- Pages read
-- Reading status (Pending, Reading, Finished)
-
-<b>Screens:</b>
-
-<img src="public/screens/screen-1_mobile.png" width="150" />
-<img src="public/screens/screen-2_mobile.png" width="150" />
-
-### 2. Progress Tracking 📊
-
-- Displays reading progress for each book
-- Visual progress bar
-- Counter of pages read vs total
-- Dynamic reading status updates
-
-<b>Screens:</b>
-
-<img src="public/screens/screen-3_mobile.png" width="150" />
-
-### 3. Pomodoro Timer ⏱️
-
-- Pomodoro-style timer for focused reading sessions
-- Time configurable between 1–60 minutes
-- Sound alarm when time is up
-- Start, pause, and reset controls
-
-<b>Screens:</b>
-
-<img src="public/screens/screen-4_mobile.png" width="150" />
-<img src="public/screens/screen-5_mobile.png" width="150" />
-<img src="public/screens/screen-6_mobile.png" width="150" />
-
-### 4. Authentication 🔐
-
-- Google Sign-In
-- Personalized user profile
-- User-specific persistent data in the cloud
-
-### 5. Organization 📑
-
-Filter books by status:
-
-- All books
-- Pending
-- Reading
-- Finished
-
-### 6. User Interface 🎨
-
-- Responsive design
-- Smooth animations
-- Modal for adding/editing books
-- Detailed book view
-- Book cards with summarized info
-
-<b>Screens:</b>
-
-<img src="public/screens/screen-7_desktop.png" width="500" />
-<img src="public/screens/screen-8_mobile.png" width="150" />
+> 🚀 **¡No pierdas más tiempo y comienza hoy!** → [Visita la aplicación aquí](https://book-tracker-fawn.vercel.app/)
 
 ---
 
-## Technical Details 🛠️
+## ✨ Características Principales
 
-- **Framework:** Next.js 13+ with App Router
-- **Database & Auth:** Firebase (Auth + Realtime Firestore)
-- **State Management:** React Hooks (`useState`, `useEffect`, `useContext`)
-- **Styling:** Tailwind CSS with responsive design and transitions
-- **Component Architecture:** Modular and reusable components
-- **Performance:** Optimized routing, conditional rendering
-- **Deployment:** Vercel (recommended for Next.js apps)
-- **Scalable Structure:** Clear module separation (`lib`, `components`, `app`)
-- **Accessibility:** Proper color contrast, semantic tags, visible focus
+### 📖 Gestión de Biblioteca Personal
+Administra tus libros con total facilidad. Guarda información detallada para cada título:
+- **Título y Autor**: Organización clara desde el primer momento.
+- **Control de Páginas**: Registro exacto de páginas totales y leídas.
+- **Estados de Lectura**: Categoriza tus libros en *Pendiente*, *Leyendo* o *Finalizado*.
+
+<div align="center">
+  <img src="public/screens/screen-1_mobile.png" width="200" style="margin: 10px;" />
+  <img src="public/screens/screen-2_mobile.png" width="200" style="margin: 10px;" />
+</div>
+
+### 📊 Seguimiento de Progreso Visual
+Visualiza tu avance de un vistazo con indicadores dinámicos:
+- **Barras de Progreso**: Gráficos suaves que muestran cuánto te falta para terminar.
+- **Contador Dinámico**: Métricas precisas de páginas completadas.
+- **Actualización Rápida**: Cambia tu progreso con un solo clic desde la vista detallada.
+
+<div align="center">
+  <img src="public/screens/screen-3_mobile.png" width="200" />
+</div>
+
+### ⏱️ Cronómetro Pomodoro Integrado
+Maximiza tu concentración durante las sesiones de lectura con nuestro temporizador especializado:
+- **Enfoque Total**: Configura sesiones de 1 a 60 minutos según tus necesidades.
+- **Alarmas Sonoras**: Notificaciones al finalizar para que sepas cuándo descansar.
+- **Control Total**: Inicia, pausa y reinicia con una interfaz intuitiva.
+
+<div align="center">
+  <img src="public/screens/screen-4_mobile.png" width="200" style="margin: 5px;" />
+  <img src="public/screens/screen-5_mobile.png" width="200" style="margin: 5px;" />
+  <img src="public/screens/screen-6_mobile.png" width="200" style="margin: 5px;" />
+</div>
+
+### 🔐 Seguridad y Personalización
+- **Acceso con Google**: Inicio de sesión rápido y seguro.
+- **Sincronización en la Nube**: Tus datos siempre disponibles, protegidos por Firebase.
+- **Perfil Personalizado**: Una experiencia adaptada a tu usuario.
+
+### 📑 Organización Inteligente
+Filtra tu colección con un sistema jerárquico impecable:
+- Ver **Todos** los libros.
+- Filtrar por **Pendientes**, **En curso** o **Terminados**.
 
 ---
 
-## 🚀 Getting Started
+## 🎨 Diseño y Experiencia (UX/UI)
+- **Diseño Responsive**: Optimizado para móviles, tablets y escritorio.
+- **Animaciones Fluidas**: Desarrollado con Framer Motion para una experiencia premium.
+- **Interfaz Moderna**: Estética limpia, modo oscuro sutil y tipografía legible.
 
-````bash
-# Clone the repository
-git clone https://github.com/tu-usuario/booktrack.git
+<div align="center">
+  <img src="public/screens/screen-7_desktop.png" width="80%" />
+  <br>
+  <img src="public/screens/screen-8_mobile.png" width="200" />
+</div>
 
-# Install dependencies
-npm install
+---
 
-# Run the development server
-npm run dev
+## 🛠️ Stack Tecnológico
 
+| Tecnología | Propósito |
+| :--- | :--- |
+| **Next.js 15+** | Framework de React con App Router para alto rendimiento. |
+| **Firebase** | Autenticación y base de datos Firestore en tiempo real. |
+| **Tailwind CSS** | Estilizado moderno, responsivo y mantenible. |
+| **Framer Motion** | Animaciones suaves e interacciones dinámicas. |
+| **Lucide React** | Librería de iconos minimalistas y elegantes. |
 
-## 🚀 Getting Started
+---
+
+## 🚀 Comenzando
+
+Sigue estos pasos para ejecutar el proyecto localmente:
 
 ```bash
-# Clone the repository
-git clone https://github.com/tu-usuario/booktrack.git
+# 1. Clona el repositorio
+git clone https://github.com/bautistaJuan/BookTrack-.git
 
-# Install dependencies
+# 2. Instala las dependencias
 npm install
 
-# Run the development server
+# 3. Configura tus variables de entorno (.env.local) con tus credenciales de Firebase
+
+# 4. Inicia el servidor de desarrollo
 npm run dev
-````
+```
 
-## Contributing 🤝
+---
 
-Feel free to fork the repository, make your changes, and submit a Pull Request (PR).
+## 🤝 Contribuciones
 
-To contribute:
+¡Las ideas nuevas son siempre bienvenidas! Si deseas contribuir:
 
-1. Fork the repo to your GitHub account.
-2. Clone your fork locally.
-3. Create a new branch for your feature or bugfix.
-4. Commit your changes.
-5. Push the branch to your fork.
-6. Open a Pull Request here explaining your changes.
+1. Haz un **Fork** del proyecto.
+2. Crea una **Rama** para tu funcionalidad (`git checkout -b feature/NuevaFuncionalidad`).
+3. Realiza un **Commit** de tus cambios (`git commit -m 'Añadir nueva funcionalidad'`).
+4. Haz **Push** a la rama (`git push origin feature/NuevaFuncionalidad`).
+5. Abre un **Pull Request**.
 
-All contributions are welcome, and I appreciate your help in improving the project.
+---
+
+<p align="center">
+  Desarrollado con ❤️ para amantes de la lectura.
+</p>
