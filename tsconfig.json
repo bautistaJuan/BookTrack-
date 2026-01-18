@@ -17,18 +17,21 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@public/*": [
-        "./public/*"
-      ]
+      "@app/*": ["app/*"],
+      "@components/*": ["app/components/*"],
+      "@lib/*": ["app/lib/*"],
+      "@hooks/*": ["app/hooks/*"],
+      "@styles/*": ["app/styles/*"],
+      "@context/*": ["app/context/*"],
+      "@utils/*": ["app/utils/*"],
+      "@public/*": ["public/*"]
     }
   },
   "include": [

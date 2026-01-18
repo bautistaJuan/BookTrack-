@@ -1,9 +1,11 @@
+"use client";
 import { useRouter } from "next/navigation";
 import { BookCardProps } from "../../types/types";
 import BookActions from "./BooksActions";
 import { motion } from "framer-motion";
-import { getPorcentajeBook, getTagColor } from "@/app/utils/utils";
-import { deleteBookFromFirestore } from "@/app/lib/firestore";
+import { getPorcentajeBook, getTagColor } from "@utils/utils";
+import { deleteBook } from "../../lib/services/bookService";
+import { BookOpen } from "lucide-react";
 
 export default function BookCard({
     book,
@@ -15,45 +17,80 @@ export default function BookCard({
     };
     const getPorcentaje = getPorcentajeBook(book);
 
+    const handleDelete = async () => {
+        if (confirm(`¿Estás seguro de que quieres eliminar "${book.title}"?`)) {
+            try {
+                await deleteBook(book.id!);
+            } catch (error) {
+                console.error("Error al eliminar libro:", error);
+                alert("No se pudo eliminar el libro.");
+            }
+        }
+    };
+
     return (
-        <div
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ y: -4 }}
+            transition={{ duration: 0.3 }}
             key={book.id}
             onClick={() => handleRouter(book.id!)}
-            className="relative h-fit bg-white rounded-xl border shadow-sm p-6 w-full max-w-md hover:shadow-md active:scale-[0.99] transition-transform cursor-pointer flex flex-col gap-4 "
+            className="group relative bg-surface rounded-2xl border border-border-light p-6 w-full max-w-md cursor-pointer flex flex-col gap-4 shadow-soft hover:shadow-soft-lg hover:border-primary-200 transition-all duration-300"
         >
+            {/* Gradient accent on hover */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-400 to-accent-400 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
             {/* Book Actions */}
-            <BookActions onEdit={() => handleEditBook(book)} onDelete={() => deleteBookFromFirestore(book.id!)} />
-            {/* Título y autor */}
-            <div>
-                <h2 className="text-lg font-semibold text-textPrimary tracking-tight">
-                    {book.title}
-                </h2>
-                <p className="text-sm text-textSecondary mt-1">{book.author}</p>
-            </div>
-            {/* Barra Progreso */}
-            <div className="w-fqull h-2 bg-gray-200 rounded-full overflow-hidden">
-                <motion.div
-                    className="h-full bg-green-500 rounded-full"
-                    animate={{ width: `${getPorcentaje}%` }}
-                    transition={{ duration: 0.4, ease: "easeInOut" }}
-                />
-            </div>
-            {/* Status */}
-            <div className="flex items-center justify-between text-xs text-textSecondary">
-                <span
-                    className={`px-2 py-0.5 rounded-full border ${getTagColor(book.status)}`}
-                >
-                    {book.status === "to read"
-                        ? "Pendiente"
-                        : book.status === "reading"
-                            ? "Leyendo"
-                            : "Finalizado"}
-                </span>
-                <span>
-                    {book.pagesRead} / {book.pages} páginas
-                </span>
+            <BookActions
+                onEdit={() => handleEditBook(book)}
+                onDelete={handleDelete}
+            />
+
+            {/* Book Icon + Title */}
+            <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-surface-secondary rounded-xl flex items-center justify-center text-primary-500 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300 shadow-soft">
+                    <BookOpen size={24} />
+                </div>
+                <div className="flex-1 min-w-0 pt-1">
+                    <h2 className="text-lg font-bold text-text-primary tracking-tight line-clamp-1 group-hover:text-primary-600 transition-colors duration-200">
+                        {book.title}
+                    </h2>
+                    <p className="text-sm font-medium text-text-secondary mt-0.5 line-clamp-1">
+                        {book.author}
+                    </p>
+                </div>
             </div>
 
-        </div>
+            {/* Progress Bar */}
+            <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                    <span className="text-text-muted">Progreso</span>
+                    <span className="font-medium text-text-secondary">{Math.round(getPorcentaje)}%</span>
+                </div>
+                <div className="w-full h-2.5 bg-primary-50 rounded-full overflow-hidden">
+                    <motion.div
+                        className="h-full gradient-primary rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${getPorcentaje}%` }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                    />
+                </div>
+            </div>
+
+            {/* Status + Pages */}
+            <div className="flex items-center justify-between pt-2">
+                <span className={`px-3 py-1 rounded-lg text-xs font-medium ${getTagColor(book.status)}`}>
+                    {book.status === "to read"
+                        ? "📚 Pendiente"
+                        : book.status === "reading"
+                            ? "📖 Leyendo"
+                            : "✅ Finalizado"}
+                </span>
+                <span className="text-xs text-text-muted">
+                    {book.pagesRead} / {book.pages} pág.
+                </span>
+            </div>
+        </motion.div>
     );
 }

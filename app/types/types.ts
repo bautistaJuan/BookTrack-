@@ -1,49 +1,76 @@
-import { LucideProps } from "lucide-react";
-import { ComponentType, Dispatch, SetStateAction } from "react";
+// types/types.ts
 import { Timestamp } from "firebase/firestore";
 
-export type FilterBooks = "to read" | "reading" | "finished" | "all";
+/**
+ * Valid reading statuses for a book
+ */
+export type BookStatus = "to read" | "reading" | "finished";
 
+/**
+ * Filter options for the book list
+ */
+export type FilterBooks = BookStatus | "all";
+
+/**
+ * Core Book interface as stored in Firestore
+ */
 export interface Book {
-  id?: string;
-  title: string;
-  author: string;
-  pages: number;
-  pagesRead: number;
-  status: FilterBooks;
-  userId?: string;
-  finishedAt?: Timestamp;
-}
-export interface Filter {
-  label: string;
-  value: FilterBooks;
-  icon: ComponentType<LucideProps>;
-}
-export interface FormProps {
-  handleCloseModal: React.Dispatch<React.SetStateAction<boolean>>;
-  bookToEdit?: Book | null;
-}
-export interface BooksContextType {
-  books: Book[];
-  addBook: (book: Omit<Book, "id" | "userId">) => Promise<void>;
-  selectedBook: Book | null;
-  selectBook: (book: Book | null) => void;
+    /** Document ID from Firestore */
+    id: string;
+    /** Book title */
+    title: string;
+    /** Book author */
+    author: string;
+    /** Total number of pages */
+    pages: number;
+    /** Number of pages read so far */
+    pagesRead: number;
+    /** Current reading status */
+    status: BookStatus;
+    /** Owner user ID */
+    userId?: string;
+    /** Timestamp when book was marked as finished */
+    finishedAt?: Timestamp;
+    /** Timestamp when document was created */
+    createdAt?: Timestamp;
+    /** Timestamp when document was last updated */
+    updatedAt?: Timestamp;
 }
 
-export type BookCardProps = {
-  book: Book;
-  handleEditBook: (book: Book) => void;
-};
+/**
+ * Input for creating a new book (omits system-generated fields)
+ */
+export interface CreateBookInput {
+    title: string;
+    author: string;
+    pages: number;
+    pagesRead: number;
+    status: BookStatus;
+}
 
+/**
+ * Input for updating an existing book (allows partial updates)
+ */
+export type UpdateBookInput = Partial<CreateBookInput>;
+
+/**
+ * Legacy interface for form data (keeping for backward compatibility during migration)
+ */
 export interface IFormTypes {
-  title: string;
-  author: string;
-  pages: number;
-  status: FilterBooks;
-  pagesRead: number;
+    title: string;
+    author: string;
+    pages: number;
+    pagesRead: number;
+    status: BookStatus;
 }
 
-export type FilterCardProps = {
-  selectFilter: Dispatch<SetStateAction<FilterBooks>>;
-  currentFilter: FilterBooks;
-};
+// UI Component Props
+export interface FormProps {
+    handleCloseModal: (status: boolean) => void;
+    bookToEdit?: Book;
+}
+
+export interface BookCardProps {
+    book: Book;
+    handleEditBook: (book: Book) => void;
+}

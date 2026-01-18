@@ -1,7 +1,8 @@
 "use client";
 
-import { EllipsisVertical } from "lucide-react";
-import { useState } from "react";
+import { EllipsisVertical, Pencil, Trash2 } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface BookActionsProps {
     onEdit: () => void;
@@ -10,6 +11,19 @@ interface BookActionsProps {
 
 const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
     const [open, setOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     const toggleDropdown = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -29,30 +43,45 @@ const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
     };
 
     return (
-        <div className="absolute top-3 right-3">
-            <button
+        <div ref={dropdownRef} className="absolute top-4 right-4 z-10">
+            <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={toggleDropdown}
-                className="p-1 hover:bg-gray-100 rounded-full"
+                className="p-2 hover:bg-surface-secondary rounded-xl transition-colors duration-200"
             >
-                <EllipsisVertical size={20} />
-            </button>
+                <EllipsisVertical size={18} className="text-text-muted" />
+            </motion.button>
 
-            {open && (
-                <div className="absolute right-0 top-10 w-36 bg-white rounded-lg shadow-lg z-10 border">
-                    <button
-                        onClick={handleEdit}
-                        className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+            <AnimatePresence>
+                {open && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95, y: -5 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: -5 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full mt-1 w-40 bg-surface rounded-xl shadow-soft-lg z-20 border border-border-light overflow-hidden"
                     >
-                        Editar
-                    </button>
-                    <button
-                        onClick={handleDelete}
-                        className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-100"
-                    >
-                        Eliminar
-                    </button>
-                </div>
-            )}
+                        <motion.button
+                            whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                            onClick={handleEdit}
+                            className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-text-secondary hover:text-text-primary transition-colors"
+                        >
+                            <Pencil size={16} />
+                            Editar
+                        </motion.button>
+                        <div className="h-px bg-border-light" />
+                        <motion.button
+                            whileHover={{ backgroundColor: "rgba(239,68,68,0.05)" }}
+                            onClick={handleDelete}
+                            className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-danger hover:text-danger transition-colors"
+                        >
+                            <Trash2 size={16} />
+                            Eliminar
+                        </motion.button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
