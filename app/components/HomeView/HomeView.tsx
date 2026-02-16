@@ -93,6 +93,7 @@ export default function HomeView() {
                 </div>
 
                 {/* Logout Button */}
+                {/* for commit */}
                 <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
