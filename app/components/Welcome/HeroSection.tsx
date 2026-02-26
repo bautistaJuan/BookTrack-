@@ -8,7 +8,7 @@ import { Sparkles } from "lucide-react";
 
 export const HeroSection = () => {
     return (
-        <section className="relative flex flex-col sm:flex-row items-center justify-center gap-12 min-h-dvh w-full px-6 sm:px-12 overflow-hidden">
+        <section className="relative flex flex-col sm:flex-row items-center justify-center gap-12 min-h-dvh w-full px-6 py-4 sm:px-12 overflow-hidden">
             {/* Animated gradient background */}
             <div className="absolute inset-0 gradient-hero animate-gradient" />
 
@@ -69,15 +69,15 @@ export const HeroSection = () => {
                         Registrá libros, seguí tu progreso y construí el hábito de leer sin esfuerzo.
                     </motion.p>
 
-                    <motion.p
+                    {/* <motion.p
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.5 }}
                         className="italic text-sm text-text-muted bg-surface-secondary px-4 py-3 rounded-xl border border-border-light"
                     >
                         "La lectura es un viaje que nos transforma." — Gabriel Rolón
-                    </motion.p>
-
+                    </motion.p> */}
+                    {/* Button Google */}
                     <motion.button
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}

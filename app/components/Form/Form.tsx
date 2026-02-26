@@ -53,14 +53,14 @@ const AddBookForm = ({ handleCloseModal, bookToEdit }: FormProps) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 className="bg-surface w-full max-w-lg rounded-3xl shadow-soft-xl overflow-hidden border border-border-light"
             >
-                <div className="p-8">
+                <div className="p-4">
                     <div className="flex items-center justify-between mb-8">
                         <div>
                             <h2 className="text-2xl font-bold text-text-primary tracking-tight">
