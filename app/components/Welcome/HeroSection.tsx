@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import google from "@public/Logo.jpeg";
-import { signInWithGoogle } from "@lib/auth";
+import { signInWithGoogle, signInAnonymously } from "@lib/auth";
 import { motion } from "framer-motion";
 import welcomeImg from "@public/welcome-hero.png";
 import { Sparkles } from "lucide-react";
@@ -78,18 +78,31 @@ export const HeroSection = () => {
                         "La lectura es un viaje que nos transforma." — Gabriel Rolón
                     </motion.p> */}
                     {/* Button Google */}
+
+                    {/* Sign up with Google */}
                     <motion.button
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.6 }}
-                        whileHover={{ scale: 1.02, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={signInWithGoogle}
-                        className="mt-4 group relative flex items-center justify-center gap-3 py-4 px-8 text-base font-semibold rounded-2xl bg-surface shadow-soft-lg border border-border hover:shadow-soft-xl hover:border-primary-200 transition-all duration-300 min-w-[300px]"
+                        className="mt-4 flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium rounded-lg text-text-primary hover:bg-primary-50 transition-colors duration-200"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary-50 to-accent-50 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <Image src={google} alt="Google Logo" width={24} height={24} className="relative z-10" />
-                        <span className="relative z-10 text-text-primary">Iniciar con Google</span>
+                        <Image src={google} alt="Google Logo" width={20} height={20} />
+                        <span>Iniciar con Google</span>
+                    </motion.button>
+                    {/* Sign up anonymously */}
+                    <motion.button
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.7 }}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={signInAnonymously}
+                        className="mt-2 flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium border-green-900 border-double border-4 text-text-secondary  hover:bg-surface transition-colors duration-200"
+                    >
+                        <span>Iniciar sesión de prueba</span>
                     </motion.button>
 
                     <motion.span

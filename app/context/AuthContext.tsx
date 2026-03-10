@@ -39,6 +39,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return () => unsubscribe();
     }, []);
 
+    // Clean up Firebase persistence if needed
+    useEffect(() => {
+        if (!user && !loading) {
+            // User is logged out, clear any Firebase data
+            const keysToRemove = Object.keys(localStorage).filter(key =>
+                key.includes('firebase:') || key.includes('authUser')
+            );
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+        }
+    }, [user, loading]);
+
     // Memoize context value to prevent unnecessary re-renders
     const value = useMemo<AuthContextValue>(() => ({
         user,

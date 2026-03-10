@@ -4,4 +4,4 @@
  * Import from @lib/firebase instead.
  */
 
-export { signInWithGoogle, logOut } from "./firebase/auth";
+export { signInWithGoogle, logOut, signInAnonymously } from "./firebase/auth";
