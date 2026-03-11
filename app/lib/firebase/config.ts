@@ -35,6 +35,6 @@ const auth = getAuth(app);
  * Google Auth Provider for OAuth login
  */
 const googleProvider = new GoogleAuthProvider();
-const anonymousSignIn = signInAnonymously(auth);
+const anonymousSignInFn = () => signInAnonymously(auth);
 
-export { app, db, auth, googleProvider, anonymousSignIn };
+export { app, db, auth, googleProvider, anonymousSignInFn as anonymousSignIn };

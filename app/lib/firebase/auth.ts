@@ -30,7 +30,7 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
  */
 export const signInAnonymously = async (): Promise<User | undefined> => {
   try {
-    const result = await anonymousSignIn;
+    const result = await anonymousSignIn();
     console.log("Usuario anónimo autenticado:", result.user);
     return result.user;
   } catch (error) {
