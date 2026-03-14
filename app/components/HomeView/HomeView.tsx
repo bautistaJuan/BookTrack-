@@ -16,6 +16,7 @@ import { Book, FilterBooks } from "@app/types/types";
 import { CircleFadingPlus, LogOut, Sparkles } from "lucide-react";
 
 export default function HomeView() {
+
     const { user } = useAuth();
     const [filter, setFilter] = useState<FilterBooks>("all");
     const { books, loading } = useBooksByUser(filter);
@@ -24,15 +25,16 @@ export default function HomeView() {
     const [photoProfile, setPhotoProfile] = useState<string>("/default-avatar.jpeg");
     const [bookToEdit, setBookToEdit] = useState<Book | null>(null);
 
+
     useEffect(() => {
         if (user?.photoURL) {
             setPhotoProfile(user.photoURL);
         }
     }, [user]);
 
-
     if (loading) return <Loader />;
     if (!user) return <Welcome />;
+
 
     const handlePhotoClick = () => {
         setShowGreeting(true);
@@ -49,6 +51,7 @@ export default function HomeView() {
         setBookToEdit(null);
     };
 
+    const displayName = user.displayName || "Anonimo ";
     return (
         <div className="w-full h-screen overflow-hidden flex flex-col bg-background">
             {/* Header */}
@@ -84,7 +87,7 @@ export default function HomeView() {
                                 <div className="flex items-center gap-2">
                                     <Sparkles className="w-4 h-4 text-accent-500" />
                                     <span className="text-sm text-text-secondary">
-                                        Hola, <span className="font-semibold text-text-primary">{user.displayName}</span>
+                                        Hola, <span className="font-semibold text-text-primary">{displayName}</span>
                                     </span>
                                 </div>
                             </motion.div>
