@@ -38,6 +38,10 @@ module.exports = {
           DEFAULT: "#ef4444",
           light: "#fecaca",
         },
+        warning: {
+          DEFAULT: "#f59e0b",
+          light: "#fef3c7",
+        },
         surface: {
           DEFAULT: "#ffffff",
           secondary: "#f8fafc",

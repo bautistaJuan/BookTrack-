@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import google from "@public/Logo.jpeg";
+// import google from "@public/Logo.jpeg";
 import { signInWithGoogle, signInAnonymously } from "@lib/auth";
 import { motion } from "framer-motion";
 import welcomeImg from "@public/welcome-hero.png";
@@ -89,7 +89,12 @@ export const HeroSection = () => {
                         onClick={signInWithGoogle}
                         className="mt-4 flex items-center justify-center gap-2 py-2 px-4 text-sm font-medium rounded-lg text-text-primary hover:bg-primary-50 transition-colors duration-200"
                     >
-                        <Image src={google} alt="Google Logo" width={20} height={20} />
+                        <svg width="18" height="18" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M44.5 20H24v8.5h11.7C34.2 33.6 29.6 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6-6C34.5 5.1 29.6 3 24 3 12.4 3 3 12.4 3 24s9.4 21 21 21c10.9 0 20-7.9 20-21 0-1.3-.2-2.7-.5-4z" fill="#FFC107" />
+                            <path d="M6.3 14.7l7 5.1C15 16.1 19.2 13 24 13c3.1 0 5.9 1.1 8.1 2.9l6-6C34.5 5.1 29.6 3 24 3 16.3 3 9.7 7.9 6.3 14.7z" fill="#FF3D00" />
+                            <path d="M24 45c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 36.1 26.9 37 24 37c-5.6 0-10.3-3.4-11.8-8.3l-7 5.4C8.6 41.4 15.7 45 24 45z" fill="#4CAF50" />
+                            <path d="M44.5 20H24v8.5h11.7c-.8 2.2-2.2 4.1-4.1 5.5l6.6 5.4C41.8 36.3 45 30.6 45 24c0-1.3-.2-2.7-.5-4z" fill="#1976D2" />
+                        </svg>
                         <span>Iniciar con Google</span>
                     </motion.button>
                     {/* Sign up anonymously */}

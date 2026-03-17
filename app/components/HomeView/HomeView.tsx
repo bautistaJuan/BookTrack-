@@ -14,6 +14,7 @@ import { useBooksByUser } from "@lib/firestore";
 import { useAuth } from "@context/AuthContext";
 import { Book, FilterBooks } from "@app/types/types";
 import { CircleFadingPlus, LogOut, Sparkles } from "lucide-react";
+import AnonymousBadge from "@components/AnonymousBadge";
 
 export default function HomeView() {
 
@@ -95,17 +96,21 @@ export default function HomeView() {
                     </AnimatePresence>
                 </div>
 
-                {/* Logout Button */}
-                {/* for commit */}
-                <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={logOut}
-                    className="flex items-center gap-2 text-sm text-danger font-medium hover:bg-danger-light/50 px-4 py-2.5 rounded-xl transition-colors duration-200"
-                >
-                    <LogOut size={18} />
-                    <span className="hidden sm:inline">Cerrar sesión</span>
-                </motion.button>
+                {/* Anonymous badge - visible only in anonymous mode */}
+                <div className="flex items-center gap-3">
+                    {user.isAnonymous && <AnonymousBadge />}
+
+                    {/* Logout Button */}
+                    <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={logOut}
+                        className="flex items-center gap-2 text-sm text-danger font-medium hover:bg-danger-light/50 px-4 py-2.5 rounded-xl transition-colors duration-200"
+                    >
+                        <LogOut size={18} />
+                        <span className="hidden sm:inline">Cerrar sesión</span>
+                    </motion.button>
+                </div>
             </header>
 
             {/* Main */}
