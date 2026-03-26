@@ -48,9 +48,9 @@ const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleDropdown}
-                className="p-2 hover:bg-surface-secondary rounded-xl transition-colors duration-200"
+                className="p-2 hover:bg-primary-50 rounded-xl transition-colors duration-200"
             >
-                <EllipsisVertical size={18} className="text-text-muted" />
+                <EllipsisVertical size={18} className="text-primary-300" />
             </motion.button>
 
             <AnimatePresence>
@@ -60,17 +60,18 @@ const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -5 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute right-0 top-full mt-1 w-40 bg-surface rounded-xl shadow-soft-lg z-20 border border-border-light overflow-hidden"
+                        className="absolute right-0 top-full mt-1 w-40 bg-white rounded-xl shadow-soft-lg z-20 border border-primary-100 overflow-hidden"
                     >
                         <motion.button
-                            whileHover={{ backgroundColor: "rgba(0,0,0,0.02)" }}
+                            whileHover={{ backgroundColor: "rgba(218,241,222,0.3)" }}
                             onClick={handleEdit}
-                            className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-text-secondary hover:text-text-primary transition-colors"
+                            className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm transition-colors"
+                            style={{ color: "#235347" }}
                         >
                             <Pencil size={16} />
                             Editar
                         </motion.button>
-                        <div className="h-px bg-border-light" />
+                        <div className="h-px bg-primary-100" />
                         <motion.button
                             whileHover={{ backgroundColor: "rgba(239,68,68,0.05)" }}
                             onClick={handleDelete}

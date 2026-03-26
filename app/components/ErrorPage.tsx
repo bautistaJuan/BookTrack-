@@ -17,7 +17,7 @@ export default function ErrorPage({ message = "Ha ocurrido un error inesperado."
     }, [router]);
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background text-center p-6">
+        <div className="flex flex-col items-center justify-center min-h-screen text-center p-6" style={{ backgroundColor: "#f8fafc" }}>
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -39,7 +39,8 @@ export default function ErrorPage({ message = "Ha ocurrido un error inesperado."
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="text-2xl font-bold text-text-primary mb-3"
+                    className="text-2xl font-bold mb-3"
+                    style={{ color: "#051F20" }}
                 >
                     ¡Ups! Algo salió mal
                 </motion.h1>
@@ -49,7 +50,8 @@ export default function ErrorPage({ message = "Ha ocurrido un error inesperado."
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-text-secondary mb-6"
+                    className="mb-6"
+                    style={{ color: "#235347" }}
                 >
                     {message}
                 </motion.p>
@@ -59,10 +61,10 @@ export default function ErrorPage({ message = "Ha ocurrido un error inesperado."
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.4 }}
-                    className="flex items-center justify-center gap-2 text-sm text-text-muted mb-6"
+                    className="flex items-center justify-center gap-2 text-sm text-primary-300 mb-6"
                 >
                     <motion.div
-                        className="w-2 h-2 bg-primary-400 rounded-full"
+                        className="w-2 h-2 bg-primary-500 rounded-full"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 1, repeat: Infinity }}
                     />

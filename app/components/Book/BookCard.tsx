@@ -36,10 +36,10 @@ export default function BookCard({
             transition={{ duration: 0.3 }}
             key={book.id}
             onClick={() => handleRouter(book.id!)}
-            className="group relative bg-surface rounded-2xl border border-border-light p-6 w-full max-w-md cursor-pointer flex flex-col gap-4 shadow-soft hover:shadow-soft-lg hover:border-primary-200 transition-all duration-300"
+            className="group relative bg-white rounded-2xl border border-primary-100 p-6 w-full max-w-md cursor-pointer flex flex-col gap-4 shadow-soft hover:shadow-soft-lg hover:border-primary-300 transition-all duration-300"
         >
             {/* Gradient accent on hover */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-400 to-accent-400 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-300 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Book Actions */}
             <BookActions
@@ -49,14 +49,14 @@ export default function BookCard({
 
             {/* Book Icon + Title */}
             <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-surface-secondary rounded-xl flex items-center justify-center text-primary-500 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300 shadow-soft">
+                <div className="flex-shrink-0 w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center text-primary-500 group-hover:bg-primary-500 group-hover:text-white transition-all duration-300 shadow-soft">
                     <BookOpen size={24} />
                 </div>
                 <div className="flex-1 min-w-0 pt-1">
-                    <h2 className="text-lg font-bold text-text-primary tracking-tight line-clamp-1 group-hover:text-primary-600 transition-colors duration-200">
+                    <h2 className="text-lg font-bold tracking-tight line-clamp-1 group-hover:text-primary-500 transition-colors duration-200" style={{ color: "#051F20" }}>
                         {book.title}
                     </h2>
-                    <p className="text-sm font-medium text-text-secondary mt-0.5 line-clamp-1">
+                    <p className="text-sm font-medium mt-0.5 line-clamp-1" style={{ color: "#235347" }}>
                         {book.author}
                     </p>
                 </div>
@@ -65,8 +65,8 @@ export default function BookCard({
             {/* Progress Bar */}
             <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                    <span className="text-text-muted">Progreso</span>
-                    <span className="font-medium text-text-secondary">{Math.round(getPorcentaje)}%</span>
+                    <span className="text-primary-300">Progreso</span>
+                    <span className="font-medium" style={{ color: "#235347" }}>{Math.round(getPorcentaje)}%</span>
                 </div>
                 <div className="w-full h-2.5 bg-primary-50 rounded-full overflow-hidden">
                     <motion.div
@@ -87,7 +87,7 @@ export default function BookCard({
                             ? "📖 Leyendo"
                             : "✅ Finalizado"}
                 </span>
-                <span className="text-xs text-text-muted">
+                <span className="text-xs text-primary-300">
                     {book.pagesRead} / {book.pages} pág.
                 </span>
             </div>

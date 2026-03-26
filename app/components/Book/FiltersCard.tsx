@@ -24,9 +24,10 @@ export default function FiltersCard({ selectFilter, currentFilter }: FilterCardP
                             font-medium text-sm transition-all duration-300
                             ${isActive
                                 ? "text-white shadow-soft-md"
-                                : "text-text-secondary hover:text-text-primary hover:bg-surface"
+                                : "hover:bg-primary-50"
                             }
                         `}
+                        style={!isActive ? { color: "#235347" } : undefined}
                     >
                         {/* Active background gradient */}
                         {isActive && (
@@ -38,7 +39,7 @@ export default function FiltersCard({ selectFilter, currentFilter }: FilterCardP
                         )}
 
                         {/* Icon */}
-                        <div className={`relative z-10 ${isActive ? "text-white" : "text-text-muted"}`}>
+                        <div className={`relative z-10 ${isActive ? "text-white" : "text-primary-300"}`}>
                             <Icon size={20} />
                         </div>
 

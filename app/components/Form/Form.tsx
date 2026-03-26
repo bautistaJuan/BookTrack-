@@ -58,71 +58,76 @@ const AddBookForm = ({ handleCloseModal, bookToEdit }: FormProps) => {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="bg-surface w-full max-w-lg rounded-3xl shadow-soft-xl overflow-hidden border border-border-light"
+                className="bg-white w-full max-w-lg rounded-3xl shadow-soft-xl overflow-hidden border border-primary-100"
             >
                 <div className="p-4">
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h2 className="text-2xl font-bold text-text-primary tracking-tight">
+                            <h2 className="text-2xl font-bold tracking-tight" style={{ color: "#051F20" }}>
                                 {bookToEdit ? "Editar Libro" : "Nuevo Libro"}
                             </h2>
-                            <p className="text-text-secondary text-sm mt-1">
+                            <p className="text-sm mt-1" style={{ color: "#235347" }}>
                                 {bookToEdit ? "Modifica los detalles de tu lectura" : "Agregá un nuevo título a tu colección"}
                             </p>
                         </div>
                         <button
                             onClick={() => handleCloseModal(false)}
-                            className="p-2 hover:bg-surface-secondary rounded-full transition-colors duration-200"
+                            className="p-2 hover:bg-primary-50 rounded-full transition-colors duration-200"
                         >
-                            <X size={20} className="text-text-muted" />
+                            <X size={20} className="text-primary-300" />
                         </button>
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="md:col-span-2 space-y-2">
-                                <label className="text-sm font-semibold text-text-secondary ml-1">Título del Libro</label>
+                                <label className="text-sm font-semibold ml-1" style={{ color: "#235347" }}>Título del Libro</label>
                                 <input
                                     {...register("title", { required: "El título es obligatorio" })}
-                                    className="w-full px-5 py-3 rounded-2xl bg-surface-secondary border border-border-light focus:border-primary-400 focus:ring-4 focus:ring-primary-400/10 outline-none transition-all duration-200 text-text-primary placeholder:text-text-muted"
+                                    className="w-full px-5 py-3 rounded-2xl bg-primary-50/30 border border-primary-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all duration-200 placeholder:text-primary-300"
+                                    style={{ color: "#051F20" }}
                                     placeholder="Ej: El Alquimista"
                                 />
                                 {errors.title && <p className="text-danger text-xs ml-1 font-medium">{errors.title.message}</p>}
                             </div>
 
                             <div className="md:col-span-2 space-y-2">
-                                <label className="text-sm font-semibold text-text-secondary ml-1">Nombre del Autor</label>
+                                <label className="text-sm font-semibold ml-1" style={{ color: "#235347" }}>Nombre del Autor</label>
                                 <input
                                     {...register("author", { required: "El autor es obligatorio" })}
-                                    className="w-full px-5 py-3 rounded-2xl bg-surface-secondary border border-border-light focus:border-primary-400 focus:ring-4 focus:ring-primary-400/10 outline-none transition-all duration-200 text-text-primary placeholder:text-text-muted"
+                                    className="w-full px-5 py-3 rounded-2xl bg-primary-50/30 border border-primary-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all duration-200 placeholder:text-primary-300"
+                                    style={{ color: "#051F20" }}
                                     placeholder="Ej: Paulo Coelho"
                                 />
                                 {errors.author && <p className="text-danger text-xs ml-1 font-medium">{errors.author.message}</p>}
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-text-secondary ml-1">Páginas Totales</label>
+                                <label className="text-sm font-semibold ml-1" style={{ color: "#235347" }}>Páginas Totales</label>
                                 <input
                                     type="number"
                                     {...register("pages", { required: "Obligatorio", min: 1 })}
-                                    className="w-full px-5 py-3 rounded-2xl bg-surface-secondary border border-border-light focus:border-primary-400 focus:ring-4 focus:ring-primary-400/10 outline-none transition-all duration-200 text-text-primary"
+                                    className="w-full px-5 py-3 rounded-2xl bg-primary-50/30 border border-primary-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all duration-200"
+                                    style={{ color: "#051F20" }}
                                 />
                             </div>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-text-secondary ml-1">Páginas Leídas</label>
+                                <label className="text-sm font-semibold ml-1" style={{ color: "#235347" }}>Páginas Leídas</label>
                                 <input
                                     type="number"
                                     {...register("pagesRead", { required: "Obligatorio", min: 0 })}
-                                    className="w-full px-5 py-3 rounded-2xl bg-surface-secondary border border-border-light focus:border-primary-400 focus:ring-4 focus:ring-primary-400/10 outline-none transition-all duration-200 text-text-primary"
+                                    className="w-full px-5 py-3 rounded-2xl bg-primary-50/30 border border-primary-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all duration-200"
+                                    style={{ color: "#051F20" }}
                                 />
                             </div>
 
                             <div className="md:col-span-2 space-y-2">
-                                <label className="text-sm font-semibold text-text-secondary ml-1">Estado de Lectura</label>
+                                <label className="text-sm font-semibold ml-1" style={{ color: "#235347" }}>Estado de Lectura</label>
                                 <select
                                     {...register("status")}
-                                    className="w-full px-5 py-3 rounded-2xl bg-surface-secondary border border-border-light focus:border-primary-400 focus:ring-4 focus:ring-primary-400/10 outline-none transition-all duration-200 text-text-primary appearance-none cursor-pointer"
+                                    className="w-full px-5 py-3 rounded-2xl bg-primary-50/30 border border-primary-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all duration-200 appearance-none cursor-pointer"
+                                    style={{ color: "#051F20" }}
                                 >
                                     <option value="to read">📚 Pendiente</option>
                                     <option value="reading">📖 Leyendo</option>
@@ -135,7 +140,8 @@ const AddBookForm = ({ handleCloseModal, bookToEdit }: FormProps) => {
                             <button
                                 type="button"
                                 onClick={() => handleCloseModal(false)}
-                                className="flex-1 px-6 py-4 rounded-2xl border border-border-light font-bold text-text-secondary hover:bg-surface-secondary transition-all duration-200"
+                                className="flex-1 px-6 py-4 rounded-2xl border border-primary-100 font-bold hover:bg-primary-50 transition-all duration-200"
+                                style={{ color: "#235347" }}
                             >
                                 Cancelar
                             </button>

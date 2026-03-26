@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 const Welcome = () => {
     return (
-        <div className="min-h-screen w-full">
+        <div className="min-h-screen w-full bg-white">
             <HeroSection />
 
             {/* Features Section with Header */}
@@ -23,7 +23,7 @@ const Welcome = () => {
                         transition={{ duration: 0.5 }}
                         className="text-center mb-4"
                     >
-                        <span className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 text-sm font-medium rounded-full">
+                        <span className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-900 text-sm font-medium rounded-full">
                             ✨ Funcionalidades
                         </span>
                     </motion.div>
@@ -33,10 +33,11 @@ const Welcome = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-text-primary leading-snug max-w-3xl"
+                        className="text-3xl sm:text-4xl md:text-5xl font-bold text-center leading-snug max-w-3xl"
+                        style={{ color: "#051F20" }}
                     >
                         Descubrí qué podés hacer con{" "}
-                        <span className="gradient-text">Reader-Tracker</span>
+                        <span className="font-playfair italic gradient-text">Lectio</span>
                     </motion.h2>
 
                     <FeaturesSection />

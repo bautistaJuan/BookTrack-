@@ -13,10 +13,10 @@ export const FeaturesSection = () => {
           transition={{ duration: 0.5, delay: index * 0.15 }}
           viewport={{ once: true, amount: 0.3 }}
           whileHover={{ y: -8, scale: 1.02 }}
-          className="group relative bg-surface rounded-2xl p-8 text-center transition-all duration-300 shadow-soft hover:shadow-soft-lg border border-border-light hover:border-primary-200 overflow-hidden"
+          className="group relative bg-white rounded-2xl p-8 text-center transition-all duration-300 shadow-soft hover:shadow-soft-lg border border-primary-100 hover:border-primary-300 overflow-hidden"
         >
           {/* Gradient overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-accent-50/0 group-hover:from-primary-50/50 group-hover:to-accent-50/30 transition-all duration-500" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-50/0 to-primary-100/0 group-hover:from-primary-50/50 group-hover:to-primary-100/30 transition-all duration-500" />
 
           {/* Icon container */}
           <div className="relative z-10 w-16 h-16 mx-auto mb-5 flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-50 rounded-2xl group-hover:scale-110 transition-transform duration-300">
@@ -24,17 +24,17 @@ export const FeaturesSection = () => {
           </div>
 
           {/* Title */}
-          <h3 className="relative z-10 text-xl font-semibold text-text-primary mb-3 group-hover:text-primary-600 transition-colors duration-300">
+          <h3 className="relative z-10 text-xl font-semibold mb-3 group-hover:text-primary-500 transition-colors duration-300" style={{ color: "#051F20" }}>
             {feature.title}
           </h3>
 
           {/* Description */}
-          <p className="relative z-10 text-text-secondary text-sm leading-relaxed">
+          <p className="relative z-10 text-sm leading-relaxed" style={{ color: "#235347" }}>
             {feature.description}
           </p>
 
           {/* Bottom accent line */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-400 to-accent-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
         </motion.div>
       ))}
     </div>

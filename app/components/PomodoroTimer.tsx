@@ -87,7 +87,8 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-center gap-8"
+                className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8"
+                style={{ background: "linear-gradient(135deg, #051F20 0%, #235347 50%, #051F20 100%)" }}
             >
                 {/* Close/minimize hint */}
                 <div className="absolute top-6 right-6">
@@ -95,7 +96,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={pauseTimer}
-                        className="p-3 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+                        className="p-3 text-primary-300 hover:text-primary-100 hover:bg-white/10 rounded-xl transition-colors"
                     >
                         <X size={24} />
                     </motion.button>
@@ -108,7 +109,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                     className="flex items-center gap-3"
                 >
                     <span className="text-4xl">🍅</span>
-                    <h2 className="text-2xl font-semibold text-white">Modo Enfoque</h2>
+                    <h2 className="text-2xl font-semibold text-primary-100">Modo Enfoque</h2>
                 </motion.div>
 
                 {/* Circular Progress */}
@@ -120,7 +121,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                             cy="144"
                             r="130"
                             fill="none"
-                            stroke="rgba(255,255,255,0.1)"
+                            stroke="rgba(142,182,155,0.15)"
                             strokeWidth="12"
                         />
                         {/* Progress circle */}
@@ -139,18 +140,18 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                         />
                         <defs>
                             <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#22c55e" />
-                                <stop offset="100%" stopColor="#f97316" />
+                                <stop offset="0%" stopColor="#8EB69B" />
+                                <stop offset="100%" stopColor="#DAF1DE" />
                             </linearGradient>
                         </defs>
                     </svg>
 
                     {/* Time display */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                        <span className="text-7xl font-bold text-white font-mono tracking-tight">
+                        <span className="text-7xl font-bold font-mono tracking-tight" style={{ color: "#DAF1DE" }}>
                             {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
                         </span>
-                        <span className="text-slate-400 text-sm mt-2">minutos restantes</span>
+                        <span className="text-primary-300 text-sm mt-2">minutos restantes</span>
                     </div>
                 </div>
 
@@ -159,7 +160,8 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={pauseTimer}
-                    className="flex items-center gap-3 px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold rounded-2xl transition-colors"
+                    className="flex items-center gap-3 px-8 py-4 bg-white/10 hover:bg-white/20 border font-semibold rounded-2xl transition-colors"
+                    style={{ borderColor: "rgba(142,182,155,0.3)", color: "#DAF1DE" }}
                 >
                     <Pause size={20} />
                     Pausar
@@ -173,10 +175,10 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
         <div className="flex flex-col items-center gap-6 py-6">
             {/* Header */}
             <div className="flex items-center gap-3">
-                <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-red-100 to-orange-50 rounded-xl">
-                    <Timer className="w-5 h-5 text-red-500" />
+                <div className="w-10 h-10 flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-50 rounded-xl">
+                    <Timer className="w-5 h-5 text-primary-500" />
                 </div>
-                <h2 className="text-lg font-semibold text-text-primary">Pomodoro Timer</h2>
+                <h2 className="text-lg font-semibold" style={{ color: "#051F20" }}>Pomodoro Timer</h2>
                 <AnimatePresence>
                     {isPaused && (
                         <motion.span
@@ -193,7 +195,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
 
             {/* Timer Display */}
             <div
-                className={`text-6xl font-bold font-mono tracking-tight ${canEdit ? 'cursor-pointer hover:text-primary-600' : ''} transition-colors`}
+                className={`text-6xl font-bold font-mono tracking-tight ${canEdit ? 'cursor-pointer hover:text-primary-500' : ''} transition-colors`}
                 onClick={() => canEdit && setEditing(true)}
                 title={canEdit ? "Click para editar" : "Detén el timer para editar"}
             >
@@ -201,7 +203,8 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                     <div className="flex items-center gap-2">
                         <input
                             type="number"
-                            className="text-center w-24 bg-transparent border-b-2 border-primary-400 text-5xl focus:outline-none text-text-primary"
+                            className="text-center w-24 bg-transparent border-b-2 border-primary-500 text-5xl focus:outline-none"
+                            style={{ color: "#051F20" }}
                             min={1}
                             max={60}
                             autoFocus
@@ -213,10 +216,10 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                                 if (e.key === "Escape") handleEditCancel();
                             }}
                         />
-                        <span className="text-5xl text-text-primary">:00</span>
+                        <span className="text-5xl" style={{ color: "#051F20" }}>:00</span>
                     </div>
                 ) : (
-                    <span className={`${!canEdit ? 'text-text-muted' : 'text-text-primary'}`}>
+                    <span style={{ color: !canEdit ? "#8EB69B" : "#051F20" }}>
                         {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
                     </span>
                 )}
@@ -229,7 +232,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        className="text-xs text-text-muted"
+                        className="text-xs text-primary-300"
                     >
                         Enter para confirmar • Escape para cancelar
                     </motion.p>

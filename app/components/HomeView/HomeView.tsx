@@ -54,9 +54,9 @@ export default function HomeView() {
 
     const displayName = user.displayName || "Anonimo ";
     return (
-        <div className="w-full h-screen overflow-hidden flex flex-col bg-background">
+        <div className="w-full h-screen overflow-hidden flex flex-col" style={{ backgroundColor: "#f8fafc" }}>
             {/* Header */}
-            <header className="w-full flex items-center justify-between glass-strong border-b border-border-light px-4 sm:px-6 py-4 shadow-soft z-20">
+            <header className="w-full flex items-center justify-between glass-strong border-b border-primary-100 px-4 sm:px-6 py-4 shadow-soft z-20">
                 <div className="relative flex items-center gap-3">
                     {/* Profile Photo */}
                     <motion.div
@@ -65,15 +65,20 @@ export default function HomeView() {
                         className="relative cursor-pointer"
                         onClick={handlePhotoClick}
                     >
-                        <div className="absolute -inset-1 bg-gradient-to-r from-primary-400 to-accent-400 rounded-full opacity-75 blur-sm" />
+                        <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-primary-300 rounded-full opacity-75 blur-sm" />
                         <Image
                             alt="Foto de perfil"
                             src={photoProfile}
                             width={48}
                             height={48}
-                            className="relative rounded-full object-cover border-2 border-surface"
+                            className="relative rounded-full object-cover border-2 border-white"
                         />
                     </motion.div>
+
+                    {/* App name */}
+                    <span className="font-playfair text-xl font-bold tracking-tight hidden sm:inline" style={{ color: "#051F20" }}>
+                        Lectio
+                    </span>
 
                     {/* Greeting Tooltip */}
                     <AnimatePresence>
@@ -83,12 +88,12 @@ export default function HomeView() {
                                 animate={{ opacity: 1, x: 0, scale: 1 }}
                                 exit={{ opacity: 0, x: -10, scale: 0.95 }}
                                 transition={{ duration: 0.2 }}
-                                className="absolute left-full ml-3 glass px-4 py-2.5 rounded-xl shadow-soft-md border border-border-light min-w-[200px]"
+                                className="absolute left-full ml-3 glass px-4 py-2.5 rounded-xl shadow-soft-md border border-primary-100 min-w-[200px]"
                             >
                                 <div className="flex items-center gap-2">
-                                    <Sparkles className="w-4 h-4 text-accent-500" />
-                                    <span className="text-sm text-text-secondary">
-                                        Hola, <span className="font-semibold text-text-primary">{displayName}</span>
+                                    <Sparkles className="w-4 h-4 text-primary-300" />
+                                    <span className="text-sm" style={{ color: "#235347" }}>
+                                        Hola, <span className="font-semibold" style={{ color: "#051F20" }}>{displayName}</span>
                                     </span>
                                 </div>
                             </motion.div>
@@ -116,7 +121,7 @@ export default function HomeView() {
             {/* Main */}
             <main className="flex flex-col sm:flex-row flex-1 overflow-hidden">
                 {/* Sidebar responsive */}
-                <aside className="w-full sm:w-auto sm:flex-shrink-0 glass-strong p-4 sm:p-5 sm:border-r border-border-light">
+                <aside className="w-full sm:w-auto sm:flex-shrink-0 glass-strong p-4 sm:p-5 sm:border-r border-primary-100">
                     <FiltersCard selectFilter={setFilter} currentFilter={filter} />
                 </aside>
 

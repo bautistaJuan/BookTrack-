@@ -53,13 +53,13 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
     const progressPercent = Math.min(100, Math.round((book.pagesRead / book.pages) * 100));
 
     return (
-        <div className="min-h-screen bg-background pb-20">
+        <div className="min-h-screen pb-20" style={{ backgroundColor: "#f8fafc" }}>
             {/* Header / Nav */}
-            <div className="bg-surface border-b border-border-light px-4 py-4 sticky top-0 z-30 shadow-sm">
+            <div className="bg-white border-b border-primary-100 px-4 py-4 sticky top-0 z-30 shadow-sm">
                 <div className="max-w-4xl mx-auto flex items-center justify-between">
                     <Link
                         href="/"
-                        className="flex items-center gap-2 text-text-secondary hover:text-primary-600 transition-colors font-medium"
+                        className="flex items-center gap-2 text-primary-500 hover:text-primary-900 transition-colors font-medium"
                     >
                         <ArrowLeft size={20} />
                         <span>Volver</span>
@@ -69,7 +69,7 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsEditing(true)}
-                            className="p-2 text-primary-600 hover:bg-primary-50 rounded-xl transition-colors"
+                            className="p-2 text-primary-500 hover:bg-primary-50 rounded-xl transition-colors"
                         >
                             <Pencil size={20} />
                         </motion.button>
@@ -92,9 +92,9 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
             <main className="max-w-4xl mx-auto px-4 pt-8">
                 {/* Hero Section */}
-                <div className="relative bg-surface rounded-3xl shadow-soft-xl overflow-hidden border border-border-light mb-8">
+                <div className="relative bg-white rounded-3xl shadow-soft-xl overflow-hidden border border-primary-100 mb-8">
                     {/* Banner Background */}
-                    <div className="h-40 bg-gradient-to-r from-primary-600 to-accent-600 opacity-90" />
+                    <div className="h-40" style={{ background: "linear-gradient(135deg, #235347 0%, #8EB69B 100%)" }} />
 
                     {/* Book Info Header */}
                     <div className="relative px-8 -mt-16">
@@ -104,34 +104,34 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                             transition={{ delay: 0.2 }}
                             className="relative inline-block"
                         >
-                            <div className="absolute -inset-2 bg-gradient-to-br from-primary-400/30 to-accent-400/30 rounded-xl blur-lg" />
+                            <div className="absolute -inset-2 bg-gradient-to-br from-primary-500/30 to-primary-300/30 rounded-xl blur-lg" />
                             <Image
                                 src={bookPort}
                                 alt="Portada del libro"
                                 width={140}
                                 height={200}
-                                className="relative rounded-xl shadow-soft-lg border-4 border-surface"
+                                className="relative rounded-xl shadow-soft-lg border-4 border-white"
                             />
                         </motion.div>
 
                         <div className="mt-6 pb-8">
-                            <h1 className="text-3xl md:text-4xl font-extrabold text-text-primary tracking-tight">
+                            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight" style={{ color: "#051F20" }}>
                                 {book.title}
                             </h1>
-                            <p className="text-lg text-text-secondary font-medium mt-2">
-                                por <span className="text-primary-600">{book.author}</span>
+                            <p className="text-lg font-medium mt-2" style={{ color: "#235347" }}>
+                                por <span className="text-primary-500">{book.author}</span>
                             </p>
 
                             <div className="flex flex-wrap gap-4 mt-6">
-                                <div className="flex items-center gap-2 px-4 py-2 bg-surface-secondary rounded-2xl border border-border-light">
+                                <div className="flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-2xl border border-primary-100">
                                     <Clock size={18} className="text-primary-500" />
-                                    <span className="text-sm font-semibold capitalize">
+                                    <span className="text-sm font-semibold capitalize" style={{ color: "#051F20" }}>
                                         {book.status === "to read" ? "Pendiente" : book.status === "reading" ? "Leyendo" : "Finalizado"}
                                     </span>
                                 </div>
-                                <div className="flex items-center gap-2 px-4 py-2 bg-surface-secondary rounded-2xl border border-border-light">
-                                    <FileText size={18} className="text-accent-500" />
-                                    <span className="text-sm font-semibold">{book.pages} páginas totales</span>
+                                <div className="flex items-center gap-2 px-4 py-2 bg-primary-50 rounded-2xl border border-primary-100">
+                                    <FileText size={18} className="text-primary-300" />
+                                    <span className="text-sm font-semibold" style={{ color: "#051F20" }}>{book.pages} páginas totales</span>
                                 </div>
                             </div>
                         </div>
@@ -142,10 +142,10 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                     {/* Left Column: Progress & Stats */}
                     <div className="md:col-span-2 space-y-8">
                         {/* Progress Section */}
-                        <section className="bg-surface rounded-3xl p-8 border border-border-light shadow-soft-lg">
+                        <section className="bg-white rounded-3xl p-8 border border-primary-100 shadow-soft-lg">
                             <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xl font-bold text-text-primary">Tu Progreso</h3>
-                                <span className="text-2xl font-black text-primary-600">{progressPercent}%</span>
+                                <h3 className="text-xl font-bold" style={{ color: "#051F20" }}>Tu Progreso</h3>
+                                <span className="text-2xl font-black text-primary-500">{progressPercent}%</span>
                             </div>
 
                             <div className="w-full h-4 bg-primary-50 rounded-full overflow-hidden mb-8">
@@ -159,7 +159,7 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
                             <div className="space-y-6">
                                 <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-bold text-text-secondary ml-1">
+                                    <label className="text-sm font-bold ml-1" style={{ color: "#235347" }}>
                                         ¿Cuántas páginas leíste hoy?
                                     </label>
                                     <div className="flex gap-3">
@@ -169,9 +169,10 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                                                 value={pagesRead}
                                                 max={book.pages}
                                                 onChange={(e) => setPagesRead(Number(e.target.value))}
-                                                className="w-full px-5 py-4 rounded-2xl bg-surface-secondary border border-border-light focus:border-primary-400 focus:ring-4 focus:ring-primary-400/10 outline-none transition-all font-bold text-lg"
+                                                className="w-full px-5 py-4 rounded-2xl bg-primary-50/30 border border-primary-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all font-bold text-lg"
+                                                style={{ color: "#051F20" }}
                                             />
-                                            <span className="absolute right-5 top-1/2 -translate-y-1/2 text-text-muted font-medium">
+                                            <span className="absolute right-5 top-1/2 -translate-y-1/2 text-primary-300 font-medium">
                                                 / {book.pages}
                                             </span>
                                         </div>
@@ -179,7 +180,7 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
                                             onClick={handleUpdatePagesRead}
-                                            className="px-8 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 transition-colors shadow-soft"
+                                            className="px-8 bg-primary-500 text-white rounded-2xl font-bold hover:bg-primary-600 transition-colors shadow-soft"
                                         >
                                             Actualizar
                                         </motion.button>
@@ -190,7 +191,7 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                                                 initial={{ opacity: 0, y: -10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0 }}
-                                                className="text-success text-sm font-bold ml-1 flex items-center gap-1 mt-2"
+                                                className="text-primary-500 text-sm font-bold ml-1 flex items-center gap-1 mt-2"
                                             >
                                                 <CheckCircle size={14} /> {updateMessage}
                                             </motion.p>
@@ -202,14 +203,14 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
                         {/* Additional Info / Dates */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="bg-surface p-6 rounded-3xl border border-border-light shadow-soft">
-                                <p className="text-text-muted text-xs font-bold uppercase tracking-wider mb-2">Agregado el</p>
-                                <p className="text-text-primary font-bold">{formatDate(book.createdAt)}</p>
+                            <div className="bg-white p-6 rounded-3xl border border-primary-100 shadow-soft">
+                                <p className="text-primary-300 text-xs font-bold uppercase tracking-wider mb-2">Agregado el</p>
+                                <p className="font-bold" style={{ color: "#051F20" }}>{formatDate(book.createdAt)}</p>
                             </div>
                             {book.finishedAt && (
-                                <div className="bg-success-light/30 p-6 rounded-3xl border border-success/20 shadow-soft">
-                                    <p className="text-success text-xs font-bold uppercase tracking-wider mb-2 text-opacity-70">Finalizado el</p>
-                                    <p className="text-success font-bold">{formatDate(book.finishedAt)}</p>
+                                <div className="bg-primary-50 p-6 rounded-3xl border border-primary-200 shadow-soft">
+                                    <p className="text-primary-500 text-xs font-bold uppercase tracking-wider mb-2">Finalizado el</p>
+                                    <p className="text-primary-900 font-bold">{formatDate(book.finishedAt)}</p>
                                 </div>
                             )}
                         </div>
@@ -217,8 +218,8 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
                     {/* Right Column: Pomodoro */}
                     <div className="space-y-8">
-                        <section className="bg-surface rounded-3xl p-6 border border-border-light shadow-soft-lg">
-                            <h3 className="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">
+                        <section className="bg-white rounded-3xl p-6 border border-primary-100 shadow-soft-lg">
+                            <h3 className="text-lg font-bold mb-6 flex items-center gap-2" style={{ color: "#051F20" }}>
                                 <Clock size={20} className="text-primary-500" />
                                 Sesión de Lectura
                             </h3>

@@ -3,8 +3,8 @@ import { AuthProvider } from "./context/AuthContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Reader Tracker",
-  description: "Hecho con 🖤 por Juan ",
+  title: "Lectio",
+  description: "Organizá tus lecturas en un solo lugar",
   icons: {
     icon: "/welcome-hero.png",
   },

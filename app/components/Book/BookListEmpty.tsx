@@ -8,13 +8,13 @@ export default function BookListEmpty() {
             transition={{ duration: 0.5 }}
             className="col-span-full flex flex-col items-center justify-center py-20 text-center"
         >
-            <div className="w-20 h-20 flex items-center justify-center bg-gradient-to-br from-primary-100 to-accent-50 rounded-2xl mb-6">
-                <BookX className="w-10 h-10 text-primary-400" />
+            <div className="w-20 h-20 flex items-center justify-center bg-gradient-to-br from-primary-100 to-primary-50 rounded-2xl mb-6">
+                <BookX className="w-10 h-10 text-primary-300" />
             </div>
-            <p className="text-xl font-semibold text-text-primary mb-2">
+            <p className="text-xl font-semibold mb-2" style={{ color: "#051F20" }}>
                 No hay libros para mostrar
             </p>
-            <p className="text-sm text-text-secondary max-w-xs">
+            <p className="text-sm max-w-xs" style={{ color: "#235347" }}>
                 Agregá un nuevo libro usando el botón + o cambiá el filtro seleccionado.
             </p>
         </motion.div>
