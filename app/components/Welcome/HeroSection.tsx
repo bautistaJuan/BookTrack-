@@ -1,11 +1,11 @@
 "use client";
 import { signInWithGoogle, signInAnonymously } from "@lib/auth";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 const title = "Lectio";
 const subtitle = "Organizá tus lecturas en un solo lugar";
 
-const letterVariants = {
+const letterVariants: Variants = {
     hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
     visible: (i: number) => ({
         opacity: 1,
@@ -14,19 +14,19 @@ const letterVariants = {
         transition: {
             delay: 0.3 + i * 0.1,
             duration: 0.6,
-            ease: [0.22, 1, 0.36, 1],
+            ease: "easeInOut",
         },
     }),
-};
+} as any;
 
-const fadeUp = {
+const fadeUp: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: (delay: number) => ({
         opacity: 1,
         y: 0,
-        transition: { delay, duration: 0.7, ease: "easeOut" },
+        transition: { delay, duration: 0.7, ease: "easeInOut" },
     }),
-};
+} as any;
 
 export const HeroSection = () => {
     return (
