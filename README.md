@@ -1,11 +1,11 @@
-# 📚 BookTrack: Tu Compañero de Lectura Inteligente
+# 📚 LECTIO: Tu Compañero de Lectura Inteligente
 
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://book-tracker-fawn.vercel.app/)
 [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-**BookTrack** es una aplicación web minimalista y potente diseñada para transformar la forma en que gestionas tu hábito de lectura. Organiza tu biblioteca personal, monitorea tu progreso en tiempo real y mantén el enfoque con herramientas integradas de productividad.
+**LECTIO** es una aplicación web minimalista y potente diseñada para transformar la forma en que gestionas tu hábito de lectura. Organiza tu biblioteca personal, monitorea tu progreso en tiempo real y mantén el enfoque con herramientas integradas de productividad.
 
 > 🚀 **¡No pierdas más tiempo y comienza hoy!** → [Visita la aplicación aquí](https://book-tracker-fawn.vercel.app/)
 
@@ -89,7 +89,7 @@ Sigue estos pasos para ejecutar el proyecto localmente:
 
 ```bash
 # 1. Clona el repositorio
-git clone https://github.com/bautistaJuan/BookTrack-.git
+git clone https://github.com/bautistaJuan/LECTIO-.git
 
 # 2. Instala las dependencias
 npm install
