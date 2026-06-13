@@ -54,7 +54,7 @@ body {
     min-height: 100vh;
     background: hsl(var(--background));
     color: hsl(var(--text-primary));
-    font-family: var(--font-jakarta), sans-serif;
+    /*font-family: var(--font-jakarta), sans-serif;*/
     font-optical-sizing: auto;
 }
 
