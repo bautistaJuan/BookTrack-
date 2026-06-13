@@ -10,9 +10,8 @@ import Image from "next/image";
 import PomodoroTimer from "@components/PomodoroTimer";
 import Loader from "@components/Loader";
 import { formatDate } from "@utils/utils";
-import { ArrowLeft, BookOpen, CheckCircle, Clock, FileText, Pencil, Trash2 } from "lucide-react";
-import { Book } from "@app/types/types";
-import AddBookForm from "@components/Form/Form";
+import { ArrowLeft, CheckCircle, Clock, FileText, Pencil, Trash2 } from "lucide-react";
+import BookForm from "@components/Book/BookForm";
 import ErrorPage from "@components/ErrorPage";
 import { useRouter } from "next/navigation";
 
@@ -22,31 +21,52 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = resolvedParams;
     const { book, error, loading } = useBookById(id);
     const [isEditing, setIsEditing] = useState(false);
-    const [pagesRead, setPagesRead] = useState<number>(0);
+    const [editedPagesRead, setEditedPagesRead] = useState<number | null>(null);
     const [updateMessage, setUpdateMessage] = useState<string | null>(null);
+    const [isUpdating, setIsUpdating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     const audioAlarm = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
         audioAlarm.current = new Audio("/mp3/alarma.mp3");
     }, []);
 
-    useEffect(() => {
-        if (book) {
-            setPagesRead(book.pagesRead);
-        }
-    }, [book]);
-
     if (loading) return <Loader />;
     if (error || !book) return <ErrorPage message={error || "Libro no encontrado"} />;
 
+    const pagesRead = editedPagesRead ?? book.pagesRead;
+
     const handleUpdatePagesRead = async () => {
+        if (!Number.isInteger(pagesRead) || pagesRead < 0 || pagesRead > book.pages) {
+            setUpdateMessage(`Ingresá un número entre 0 y ${book.pages}.`);
+            return;
+        }
+
+        setIsUpdating(true);
         try {
             await updateBook(id, { pagesRead });
-            setUpdateMessage("¡Páginas actualizadas!");
+            setEditedPagesRead(null);
+            setUpdateMessage("Páginas actualizadas.");
             setTimeout(() => setUpdateMessage(null), 2500);
         } catch (err) {
             console.error("Error actualizando páginas leídas:", err);
-            setUpdateMessage("Ocurrió un error");
+            setUpdateMessage("No se pudo actualizar el progreso.");
+        } finally {
+            setIsUpdating(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!confirm(`¿Eliminar "${book.title}"? Esta acción no se puede deshacer.`)) return;
+
+        setIsDeleting(true);
+        try {
+            await deleteBook(id);
+            router.replace("/");
+        } catch (err) {
+            console.error("Error eliminando libro:", err);
+            setUpdateMessage("No se pudo eliminar el libro.");
+            setIsDeleting(false);
         }
     };
 
@@ -66,23 +86,23 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                     </Link>
                     <div className="flex items-center gap-3">
                         <motion.button
+                            type="button"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => setIsEditing(true)}
                             className="p-2 text-primary-500 hover:bg-primary-50 rounded-xl transition-colors"
+                            aria-label="Editar libro"
                         >
                             <Pencil size={20} />
                         </motion.button>
                         <motion.button
+                            type="button"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={async () => {
-                                if (confirm("¿Estás seguro de que quieres eliminar este libro?")) {
-                                    await deleteBook(id);
-                                    router.push("/");
-                                }
-                            }}
+                            onClick={handleDelete}
+                            disabled={isDeleting}
                             className="p-2 text-danger hover:bg-danger-light/50 rounded-xl transition-colors"
+                            aria-label="Eliminar libro"
                         >
                             <Trash2 size={20} />
                         </motion.button>
@@ -150,6 +170,11 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
                             <div className="w-full h-4 bg-primary-50 rounded-full overflow-hidden mb-8">
                                 <motion.div
+                                    role="progressbar"
+                                    aria-label="Progreso de lectura"
+                                    aria-valuemin={0}
+                                    aria-valuemax={100}
+                                    aria-valuenow={progressPercent}
                                     initial={{ width: 0 }}
                                     animate={{ width: `${progressPercent}%` }}
                                     transition={{ duration: 1, ease: "easeOut" }}
@@ -159,16 +184,18 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
                             <div className="space-y-6">
                                 <div className="flex flex-col gap-2">
-                                    <label className="text-sm font-bold ml-1" style={{ color: "#235347" }}>
-                                        ¿Cuántas páginas leíste hoy?
+                                    <label htmlFor="pages-read" className="text-sm font-bold ml-1" style={{ color: "#235347" }}>
+                                        Página actual
                                     </label>
                                     <div className="flex gap-3">
                                         <div className="relative flex-1">
                                             <input
+                                                id="pages-read"
                                                 type="number"
                                                 value={pagesRead}
+                                                min={0}
                                                 max={book.pages}
-                                                onChange={(e) => setPagesRead(Number(e.target.value))}
+                                                onChange={(e) => setEditedPagesRead(Number(e.target.value))}
                                                 className="w-full px-5 py-4 rounded-2xl bg-primary-50/30 border border-primary-100 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 outline-none transition-all font-bold text-lg"
                                                 style={{ color: "#051F20" }}
                                             />
@@ -177,17 +204,21 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
                                             </span>
                                         </div>
                                         <motion.button
+                                            type="button"
                                             whileHover={{ scale: 1.02 }}
                                             whileTap={{ scale: 0.98 }}
                                             onClick={handleUpdatePagesRead}
+                                            disabled={isUpdating}
                                             className="px-8 bg-primary-500 text-white rounded-2xl font-bold hover:bg-primary-600 transition-colors shadow-soft"
                                         >
-                                            Actualizar
+                                            {isUpdating ? "Guardando..." : "Actualizar"}
                                         </motion.button>
                                     </div>
                                     <AnimatePresence>
                                         {updateMessage && (
                                             <motion.p
+                                                role="status"
+                                                aria-live="polite"
                                                 initial={{ opacity: 0, y: -10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0 }}
@@ -231,8 +262,8 @@ const BookDetail = ({ params }: { params: Promise<{ id: string }> }) => {
 
             <AnimatePresence>
                 {isEditing && (
-                    <AddBookForm
-                        handleCloseModal={setIsEditing}
+                    <BookForm
+                        onClose={() => setIsEditing(false)}
                         bookToEdit={book}
                     />
                 )}

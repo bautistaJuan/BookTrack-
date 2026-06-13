@@ -2,19 +2,23 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { UserX, X, AlertTriangle } from "lucide-react";
-import { signInWithGoogle } from "@lib/auth";
+import { signInWithGoogle } from "@lib/firebase";
 
 export default function AnonymousBadge() {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleGoogleLogin = async () => {
         setLoading(true);
+        setError(null);
         try {
             await signInWithGoogle();
+            setOpen(false);
+        } catch {
+            setError("No se pudo iniciar sesión con Google.");
         } finally {
             setLoading(false);
-            setOpen(false);
         }
     };
 
@@ -92,6 +96,7 @@ export default function AnonymousBadge() {
                                 </svg>
                                 {loading ? "Iniciando..." : "Iniciar sesión con Google"}
                             </motion.button>
+                            {error && <p role="alert" className="text-xs text-danger">{error}</p>}
                         </motion.div>
                     </>
                 )}

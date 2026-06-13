@@ -1,5 +1,5 @@
 // lib/firebase/auth.ts
-import { signInWithPopup, signOut, User } from "firebase/auth";
+import { linkWithPopup, signInWithPopup, signOut, User } from "firebase/auth";
 import { auth, googleProvider, anonymousSignIn } from "./config";
 import { AuthenticationError } from "../errors";
 
@@ -11,6 +11,11 @@ import { AuthenticationError } from "../errors";
  */
 export const signInWithGoogle = async (): Promise<User | undefined> => {
   try {
+    if (auth.currentUser?.isAnonymous) {
+      const result = await linkWithPopup(auth.currentUser, googleProvider);
+      return result.user;
+    }
+
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
   } catch (error) {
@@ -31,7 +36,6 @@ export const signInWithGoogle = async (): Promise<User | undefined> => {
 export const signInAnonymously = async (): Promise<User | undefined> => {
   try {
     const result = await anonymousSignIn();
-    console.log("Usuario anónimo autenticado:", result.user);
     return result.user;
   } catch (error) {
     const message =

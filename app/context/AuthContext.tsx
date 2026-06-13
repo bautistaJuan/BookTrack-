@@ -15,11 +15,7 @@ interface AuthContextValue {
     isAuthenticated: boolean;
 }
 
-const AuthContext = createContext<AuthContextValue>({
-    user: null,
-    loading: true,
-    isAuthenticated: false,
-});
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 /**
  * Auth Provider component that manages authentication state
@@ -38,17 +34,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Cleanup subscription on unmount
         return () => unsubscribe();
     }, []);
-
-    // Clean up Firebase persistence if needed
-    useEffect(() => {
-        if (!user && !loading) {
-            // User is logged out, clear any Firebase data
-            const keysToRemove = Object.keys(localStorage).filter(key =>
-                key.includes('firebase:') || key.includes('authUser')
-            );
-            keysToRemove.forEach(key => localStorage.removeItem(key));
-        }
-    }, [user, loading]);
 
     // Memoize context value to prevent unnecessary re-renders
     const value = useMemo<AuthContextValue>(() => ({

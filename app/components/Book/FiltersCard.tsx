@@ -5,13 +5,14 @@ import { filters } from "@utils/utils";
 
 export default function FiltersCard({ selectFilter, currentFilter }: FilterCardProps) {
     return (
-        <div className="flex sm:flex-col items-center justify-center gap-2">
+        <div role="group" aria-label="Filtrar libros por estado" className="flex sm:flex-col items-center justify-center gap-2">
             {filters.map((f, index) => {
                 const isActive = currentFilter === f.value;
                 const Icon = f.icon;
 
                 return (
                     <motion.button
+                        type="button"
                         key={f.value}
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -19,6 +20,8 @@ export default function FiltersCard({ selectFilter, currentFilter }: FilterCardP
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => selectFilter(f.value)}
+                        aria-pressed={isActive}
+                        aria-label={`Mostrar ${f.label.toLowerCase()}`}
                         className={`
                             relative flex items-center gap-3 px-4 py-3 rounded-xl w-full sm:w-[140px]
                             font-medium text-sm transition-all duration-300

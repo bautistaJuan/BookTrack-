@@ -1,19 +1,19 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Pause, RotateCcw, Timer, X } from "lucide-react";
+import { PomodoroTimerProps } from "@app/types/types";
 
-type TimerState = 'idle' | 'running' | 'paused';
+type TimerState = "idle" | "running" | "paused";
+const noop = () => undefined;
 
-const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) => {
+const PomodoroTimer = ({ onComplete = noop }: PomodoroTimerProps) => {
     const [minutes, setMinutes] = useState(25);
     const [seconds, setSeconds] = useState(0);
     const [timerState, setTimerState] = useState<TimerState>('idle');
     const [sessionDuration, setSessionDuration] = useState(25);
     const [editing, setEditing] = useState(false);
     const [inputValue, setInputValue] = useState(sessionDuration.toString());
-
-    const memoizedOnComplete = useCallback(onComplete, [onComplete]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -23,7 +23,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                 if (seconds === 0) {
                     if (minutes === 0) {
                         setTimerState('idle');
-                        memoizedOnComplete();
+                        onComplete();
                         return;
                     } else {
                         setMinutes(prev => prev - 1);
@@ -38,7 +38,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
         return () => {
             if (interval) clearInterval(interval);
         };
-    }, [timerState, minutes, seconds, memoizedOnComplete]);
+    }, [timerState, minutes, seconds, onComplete]);
 
     const startTimer = () => setTimerState('running');
     const pauseTimer = () => setTimerState('paused');
@@ -89,14 +89,19 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                 exit={{ opacity: 0 }}
                 className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8"
                 style={{ background: "linear-gradient(135deg, #051F20 0%, #235347 50%, #051F20 100%)" }}
+                role="dialog"
+                aria-modal="true"
+                aria-label="Temporizador de lectura en curso"
             >
                 {/* Close/minimize hint */}
                 <div className="absolute top-6 right-6">
                     <motion.button
+                        type="button"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={pauseTimer}
                         className="p-3 text-primary-300 hover:text-primary-100 hover:bg-white/10 rounded-xl transition-colors"
+                        aria-label="Pausar y salir del modo enfoque"
                     >
                         <X size={24} />
                     </motion.button>
@@ -113,8 +118,8 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                 </motion.div>
 
                 {/* Circular Progress */}
-                <div className="relative">
-                    <svg className="w-72 h-72 -rotate-90">
+                <div className="relative flex items-center justify-center">
+                    <svg className="w-72 h-72 -rotate-90" aria-hidden="true">
                         {/* Background circle */}
                         <circle
                             cx="144"
@@ -147,7 +152,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                     </svg>
 
                     {/* Time display */}
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div className="absolute flex flex-col items-center" aria-live="off">
                         <span className="text-7xl font-bold font-mono tracking-tight" style={{ color: "#DAF1DE" }}>
                             {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
                         </span>
@@ -157,6 +162,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
 
                 {/* Pause button */}
                 <motion.button
+                    type="button"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={pauseTimer}
@@ -194,11 +200,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
             </div>
 
             {/* Timer Display */}
-            <div
-                className={`text-6xl font-bold font-mono tracking-tight ${canEdit ? 'cursor-pointer hover:text-primary-500' : ''} transition-colors`}
-                onClick={() => canEdit && setEditing(true)}
-                title={canEdit ? "Click para editar" : "Detén el timer para editar"}
-            >
+            <div className="text-6xl font-bold font-mono tracking-tight">
                 {editing && canEdit ? (
                     <div className="flex items-center gap-2">
                         <input
@@ -219,9 +221,16 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                         <span className="text-5xl" style={{ color: "#051F20" }}>:00</span>
                     </div>
                 ) : (
-                    <span style={{ color: !canEdit ? "#8EB69B" : "#051F20" }}>
+                    <button
+                        type="button"
+                        onClick={() => canEdit && setEditing(true)}
+                        disabled={!canEdit}
+                        className="rounded-lg transition-colors enabled:hover:text-primary-500 disabled:cursor-default"
+                        style={{ color: !canEdit ? "#8EB69B" : "#051F20" }}
+                        aria-label={canEdit ? `Editar duración, actualmente ${minutes} minutos` : `${minutes} minutos y ${seconds} segundos restantes`}
+                    >
                         {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
-                    </span>
+                    </button>
                 )}
             </div>
 
@@ -243,6 +252,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
             <div className="flex gap-3">
                 {timerState === 'idle' ? (
                     <motion.button
+                        type="button"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={startTimer}
@@ -254,6 +264,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
                     </motion.button>
                 ) : isPaused ? (
                     <motion.button
+                        type="button"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={resumeTimer}
@@ -266,6 +277,7 @@ const PomodoroTimer = ({ onComplete = () => { } }: { onComplete?: () => void }) 
 
                 {timerState !== 'idle' && (
                     <motion.button
+                        type="button"
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={resetTimer}

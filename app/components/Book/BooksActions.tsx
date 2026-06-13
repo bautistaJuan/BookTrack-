@@ -20,9 +20,16 @@ const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
                 setOpen(false);
             }
         };
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === "Escape") setOpen(false);
+        };
 
         document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleEscape);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleEscape);
+        };
     }, []);
 
     const toggleDropdown = (e: React.MouseEvent) => {
@@ -45,17 +52,22 @@ const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
     return (
         <div ref={dropdownRef} className="absolute top-4 right-4 z-10">
             <motion.button
+                type="button"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={toggleDropdown}
                 className="p-2 hover:bg-primary-50 rounded-xl transition-colors duration-200"
+                aria-label="Abrir acciones del libro"
+                aria-haspopup="menu"
+                aria-expanded={open}
             >
-                <EllipsisVertical size={18} className="text-primary-300" />
+                <EllipsisVertical size={18} className="text-primary-300" aria-hidden="true" />
             </motion.button>
 
             <AnimatePresence>
                 {open && (
                     <motion.div
+                        role="menu"
                         initial={{ opacity: 0, scale: 0.95, y: -5 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -5 }}
@@ -63,6 +75,8 @@ const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
                         className="absolute right-0 top-full mt-1 w-40 bg-white rounded-xl shadow-soft-lg z-20 border border-primary-100 overflow-hidden"
                     >
                         <motion.button
+                            type="button"
+                            role="menuitem"
                             whileHover={{ backgroundColor: "rgba(218,241,222,0.3)" }}
                             onClick={handleEdit}
                             className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm transition-colors"
@@ -73,6 +87,8 @@ const BookActions = ({ onEdit, onDelete }: BookActionsProps) => {
                         </motion.button>
                         <div className="h-px bg-primary-100" />
                         <motion.button
+                            type="button"
+                            role="menuitem"
                             whileHover={{ backgroundColor: "rgba(239,68,68,0.05)" }}
                             onClick={handleDelete}
                             className="flex items-center gap-3 w-full text-left px-4 py-3 text-sm text-danger hover:text-danger transition-colors"

@@ -8,4 +8,4 @@
 export { app, db, auth, googleProvider } from "./config";
 
 // Authentication functions
-export { signInWithGoogle, logOut, getCurrentUser } from "./auth";
+export { signInWithGoogle, signInAnonymously, logOut, getCurrentUser } from "./auth";

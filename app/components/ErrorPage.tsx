@@ -1,20 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { AlertTriangle, Home } from "lucide-react";
 
 export default function ErrorPage({ message = "Ha ocurrido un error inesperado." }) {
     const router = useRouter();
-
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            router.push("/");
-        }, 5000);
-
-        return () => clearTimeout(timeout);
-    }, [router]);
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen text-center p-6" style={{ backgroundColor: "#f8fafc" }}>
@@ -56,22 +47,6 @@ export default function ErrorPage({ message = "Ha ocurrido un error inesperado."
                     {message}
                 </motion.p>
 
-                {/* Redirect notice */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="flex items-center justify-center gap-2 text-sm text-primary-300 mb-6"
-                >
-                    <motion.div
-                        className="w-2 h-2 bg-primary-500 rounded-full"
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 1, repeat: Infinity }}
-                    />
-                    Redirigiendo al inicio en 5 segundos...
-                </motion.div>
-
-                {/* Manual redirect button */}
                 <motion.button
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -82,7 +57,7 @@ export default function ErrorPage({ message = "Ha ocurrido un error inesperado."
                     className="inline-flex items-center gap-2 btn-primary"
                 >
                     <Home size={18} />
-                    Ir al inicio ahora
+                    Volver al inicio
                 </motion.button>
             </motion.div>
         </div>

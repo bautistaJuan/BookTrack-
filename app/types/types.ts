@@ -66,7 +66,7 @@ export interface IFormTypes {
 
 // UI Component Props
 export interface FormProps {
-    handleCloseModal: (status: boolean) => void;
+    onClose: () => void;
     bookToEdit?: Book | null;
 }
 
@@ -92,4 +92,6 @@ export interface FilterCardProps {
     currentFilter: FilterBooks;
 }
 
-
+export interface PomodoroTimerProps {
+    onComplete?: () => void;
+}

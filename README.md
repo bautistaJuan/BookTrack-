@@ -7,7 +7,7 @@
 
 **LECTIO** es una aplicación web minimalista y potente diseñada para transformar la forma en que gestionas tu hábito de lectura. Organiza tu biblioteca personal, monitorea tu progreso en tiempo real y mantén el enfoque con herramientas integradas de productividad.
 
-> 🚀 **¡No pierdas más tiempo y comienza hoy!** → [Visita la aplicación aquí](https://book-tracker-fawn.vercel.app/)
+> 🚀 [Visita la aplicación aquí](https://book-tracker-fawn.vercel.app/)
 
 ---
 
@@ -75,7 +75,7 @@ Filtra tu colección con un sistema jerárquico impecable:
 
 | Tecnología | Propósito |
 | :--- | :--- |
-| **Next.js 15+** | Framework de React con App Router para alto rendimiento. |
+| **Next.js 16** | Framework de React con App Router para alto rendimiento. |
 | **Firebase** | Autenticación y base de datos Firestore en tiempo real. |
 | **Tailwind CSS** | Estilizado moderno, responsivo y mantenible. |
 | **Framer Motion** | Animaciones suaves e interacciones dinámicas. |
@@ -92,12 +92,12 @@ Sigue estos pasos para ejecutar el proyecto localmente:
 git clone https://github.com/bautistaJuan/LECTIO-.git
 
 # 2. Instala las dependencias
-npm install
+pnpm install
 
 # 3. Configura tus variables de entorno (.env.local) con tus credenciales de Firebase
 
 # 4. Inicia el servidor de desarrollo
-npm run dev
+pnpm dev
 ```
 
 ---

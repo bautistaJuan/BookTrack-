@@ -1,5 +1,6 @@
 "use client";
-import { signInWithGoogle, signInAnonymously } from "@lib/auth";
+import { useState } from "react";
+import { signInWithGoogle, signInAnonymously } from "@lib/firebase";
 import { motion, Variants } from "framer-motion";
 
 const title = "Lectio";
@@ -17,7 +18,7 @@ const letterVariants: Variants = {
             ease: "easeInOut",
         },
     }),
-} as any;
+};
 
 const fadeUp: Variants = {
     hidden: { opacity: 0, y: 20 },
@@ -26,9 +27,29 @@ const fadeUp: Variants = {
         y: 0,
         transition: { delay, duration: 0.7, ease: "easeInOut" },
     }),
-} as any;
+};
 
 export const HeroSection = () => {
+    const [pendingAction, setPendingAction] = useState<"google" | "anonymous" | null>(null);
+    const [authError, setAuthError] = useState<string | null>(null);
+
+    const handleSignIn = async (method: "google" | "anonymous") => {
+        setPendingAction(method);
+        setAuthError(null);
+
+        try {
+            if (method === "google") {
+                await signInWithGoogle();
+            } else {
+                await signInAnonymously();
+            }
+        } catch {
+            setAuthError("No se pudo iniciar sesión. Intentá nuevamente.");
+        } finally {
+            setPendingAction(null);
+        }
+    };
+
     return (
         <section
             className="relative flex flex-col items-center justify-center min-h-dvh w-full overflow-hidden"
@@ -103,7 +124,9 @@ export const HeroSection = () => {
                 >
                     {/* Google Sign-in */}
                     <button
-                        onClick={signInWithGoogle}
+                        type="button"
+                        onClick={() => handleSignIn("google")}
+                        disabled={pendingAction !== null}
                         className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-xl text-sm font-medium transition-all duration-300 cursor-pointer"
                         style={{
                             backgroundColor: "rgba(218,241,222,0.08)",
@@ -125,12 +148,14 @@ export const HeroSection = () => {
                             <path d="M24 45c5.5 0 10.4-1.9 14.2-5.1l-6.6-5.4C29.6 36.1 26.9 37 24 37c-5.6 0-10.3-3.4-11.8-8.3l-7 5.4C8.6 41.4 15.7 45 24 45z" fill="#4CAF50" />
                             <path d="M44.5 20H24v8.5h11.7c-.8 2.2-2.2 4.1-4.1 5.5l6.6 5.4C41.8 36.3 45 30.6 45 24c0-1.3-.2-2.7-.5-4z" fill="#1976D2" />
                         </svg>
-                        <span>Iniciar con Google</span>
+                        <span>{pendingAction === "google" ? "Iniciando..." : "Iniciar con Google"}</span>
                     </button>
 
                     {/* Anonymous Sign-in */}
                     <button
-                        onClick={signInAnonymously}
+                        type="button"
+                        onClick={() => handleSignIn("anonymous")}
+                        disabled={pendingAction !== null}
                         className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl text-sm font-medium transition-all duration-300 cursor-pointer"
                         style={{
                             color: "#8EB69B",
@@ -143,9 +168,15 @@ export const HeroSection = () => {
                             e.currentTarget.style.backgroundColor = "transparent";
                         }}
                     >
-                        <span>Iniciar sesión de prueba</span>
+                        <span>{pendingAction === "anonymous" ? "Iniciando..." : "Iniciar sesión de prueba"}</span>
                     </button>
                 </motion.div>
+
+                {authError && (
+                    <p role="alert" className="text-sm text-red-300">
+                        {authError}
+                    </p>
+                )}
 
                 {/* Footer note */}
                 <motion.span

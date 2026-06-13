@@ -33,15 +33,6 @@ service cloud.firestore {
         && isValidBookStatus(data.status);
     }
     
-    function isValidBookUpdate(data) {
-      // Allow partial updates
-      return (!('title' in data) || (data.title is string && data.title.size() > 0 && data.title.size() <= 200))
-        && (!('author' in data) || (data.author is string && data.author.size() > 0 && data.author.size() <= 100))
-        && (!('pages' in data) || (data.pages is int && data.pages > 0 && data.pages <= 10000))
-        && (!('pagesRead' in data) || (data.pagesRead is int && data.pagesRead >= 0))
-        && (!('status' in data) || isValidBookStatus(data.status));
-    }
-    
     // Users collection
     match /users/{userId} {
       // Users can only read/write their own user document
@@ -59,7 +50,8 @@ service cloud.firestore {
         
         // Only the owner can update their books with valid data
         allow update: if isOwner(userId) 
-          && isValidBookUpdate(request.resource.data);
+          && isValidBook(request.resource.data)
+          && request.resource.data.userId == resource.data.userId;
         
         // Only the owner can delete their books
         allow delete: if isOwner(userId);

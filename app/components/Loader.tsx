@@ -1,9 +1,18 @@
 "use client";
 import { motion } from "framer-motion";
 
-const Loader = () => {
+interface LoaderProps {
+    fullScreen?: boolean;
+}
+
+const Loader = ({ fullScreen = true }: LoaderProps) => {
     return (
-        <div className="flex flex-col justify-center items-center h-screen gap-4" style={{ backgroundColor: "#f8fafc" }}>
+        <div
+            role="status"
+            aria-live="polite"
+            className={`flex flex-col justify-center items-center gap-4 ${fullScreen ? "min-h-dvh" : "col-span-full min-h-64"}`}
+            style={{ backgroundColor: "#f8fafc" }}
+        >
             {/* Animated loader */}
             <div className="relative">
                 {/* Outer ring */}

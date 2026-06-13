@@ -7,7 +7,6 @@ import {
     where, 
     onSnapshot,
     doc,
-    getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 import { useAuth } from "@context/AuthContext";
@@ -20,61 +19,51 @@ import { Book, FilterBooks } from "@app/types/types";
  */
 export function useBooksByUser(filter: FilterBooks = "all") {
     const { user, loading: authLoading } = useAuth();
-    const [books, setBooks] = useState<Book[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const queryKey = user?.uid ? `${user.uid}:${filter}` : "";
+    const [result, setResult] = useState<{
+        key: string;
+        books: Book[];
+        error: string | null;
+    }>({ key: "", books: [], error: null });
 
     useEffect(() => {
-        // Wait for auth to resolve
-        if (authLoading) {
-            return;
-        }
-        
-        // No user, no books
-        if (!user?.uid) {
-            setBooks([]);
-            setLoading(false);
-            return;
-        }
+        if (authLoading || !user?.uid) return;
 
-        setLoading(true);
-        setError(null);
+        const userBooksRef = collection(db, "users", user.uid, "books");
+        const baseQuery = filter === "all"
+            ? query(userBooksRef)
+            : query(userBooksRef, where("status", "==", filter));
 
-        try {
-            // Build query (orderBy removed - requires composite index that may still be building)
-            const userBooksRef = collection(db, "users", user.uid, "books");
-            const baseQuery = filter === "all"
-                ? query(userBooksRef)
-                : query(userBooksRef, where("status", "==", filter));
+        const unsubscribe = onSnapshot(
+            baseQuery,
+            (snapshot) => {
+                const booksList = snapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                })) as Book[];
 
-            // Subscribe to real-time updates
-            const unsubscribe = onSnapshot(
-                baseQuery,
-                (snapshot) => {
-                    const booksList = snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data(),
-                    })) as Book[];
-                    
-                    setBooks(booksList);
-                    setLoading(false);
-                },
-                (err) => {
-                    console.error("Error fetching books:", err);
-                    setError("Error al cargar los libros");
-                    setLoading(false);
-                }
-            );
+                booksList.sort((a, b) => {
+                    const aCreatedAt = a.createdAt?.toMillis() ?? 0;
+                    const bCreatedAt = b.createdAt?.toMillis() ?? 0;
+                    return bCreatedAt - aCreatedAt;
+                });
 
-            return () => unsubscribe();
-        } catch (err) {
-            console.error("Error setting up books listener:", err);
-            setError("Error al configurar la suscripción");
-            setLoading(false);
-        }
-    }, [user?.uid, authLoading, filter]);
+                setResult({ key: queryKey, books: booksList, error: null });
+            },
+            (err) => {
+                console.error("Error fetching books:", err);
+                setResult({ key: queryKey, books: [], error: "Error al cargar los libros" });
+            }
+        );
 
-    return { books, loading, error };
+        return unsubscribe;
+    }, [user?.uid, authLoading, filter, queryKey]);
+
+    if (authLoading) return { books: [], loading: true, error: null };
+    if (!user?.uid) return { books: [], loading: false, error: null };
+    if (result.key !== queryKey) return { books: [], loading: true, error: null };
+
+    return { books: result.books, loading: false, error: result.error };
 }
 
 /**
@@ -84,54 +73,47 @@ export function useBooksByUser(filter: FilterBooks = "all") {
  */
 export function useBookById(id: string) {
     const { user, loading: authLoading } = useAuth();
-    const [book, setBook] = useState<Book | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const queryKey = user?.uid && id ? `${user.uid}:${id}` : "";
+    const [result, setResult] = useState<{
+        key: string;
+        book: Book | null;
+        error: string | null;
+    }>({ key: "", book: null, error: null });
 
     useEffect(() => {
-        // Wait for auth to resolve
-        if (authLoading) {
-            return;
-        }
-        
-        // No ID or no user
-        if (!id || !user?.uid) {
-            setBook(null);
-            setLoading(false);
-            return;
-        }
+        if (authLoading || !id || !user?.uid) return;
 
-        const fetchBook = async () => {
-            setLoading(true);
-            setError(null);
-
-            try {
-                const bookRef = doc(db, "users", user.uid, "books", id);
-                const docSnapshot = await getDoc(bookRef);
-
-                if (!docSnapshot.exists()) {
-                    setError("El libro no existe");
-                    setBook(null);
+        const bookRef = doc(db, "users", user.uid, "books", id);
+        const unsubscribe = onSnapshot(
+            bookRef,
+            (snapshot) => {
+                if (!snapshot.exists()) {
+                    setResult({ key: queryKey, book: null, error: "El libro no existe" });
                 } else {
-                    setBook({
-                        id: docSnapshot.id,
-                        ...docSnapshot.data(),
-                    } as Book);
+                    setResult({
+                        key: queryKey,
+                        book: {
+                            id: snapshot.id,
+                            ...snapshot.data(),
+                        } as Book,
+                        error: null,
+                    });
                 }
-            } catch (err) {
+            },
+            (err) => {
                 console.error("Error fetching book:", err);
-                const message = err instanceof Error ? err.message : "Error desconocido";
-                setError(message);
-                setBook(null);
-            } finally {
-                setLoading(false);
+                setResult({ key: queryKey, book: null, error: "No se pudo cargar el libro" });
             }
-        };
+        );
 
-        fetchBook();
-    }, [id, user?.uid, authLoading]);
+        return unsubscribe;
+    }, [id, user?.uid, authLoading, queryKey]);
 
-    return { book, loading, error };
+    if (authLoading) return { book: null, loading: true, error: null };
+    if (!id || !user?.uid) return { book: null, loading: false, error: null };
+    if (result.key !== queryKey) return { book: null, loading: true, error: null };
+
+    return { book: result.book, loading: false, error: result.error };
 }
 
 /**

@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        jakarta: ['"Plus Jakarta Sans"', "sans-serif"],
-        playfair: ['"Playfair Display"', "serif"],
+        jakarta: ["var(--font-jakarta)", "sans-serif"],
+        playfair: ["var(--font-playfair)", "serif"],
       },
       colors: {
         primary: {
