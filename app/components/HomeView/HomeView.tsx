@@ -58,7 +58,7 @@ export default function HomeView() {
     return (
         <div className="flex min-h-dvh w-full flex-col bg-background">
             {/* Header */}
-            <header className="w-full flex items-center justify-between glass-strong border-b border-primary-100 px-4 sm:px-6 py-4 shadow-soft z-20">
+            <header className="w-full flex items-center justify-between glass-strong border-b border-border px-4 sm:px-6 py-4 shadow-soft z-20">
                 <div className="relative flex items-center gap-3">
                     {/* Profile Photo */}
                     <motion.button
@@ -70,18 +70,18 @@ export default function HomeView() {
                         aria-label={`Saludar a ${displayName}`}
                         aria-expanded={showGreeting}
                     >
-                        <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-primary-300 rounded-full opacity-75 blur-sm" />
+                        <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-blue-400 rounded-full opacity-75 blur-sm" />
                         <Image
                             alt="Foto de perfil"
                             src={photoProfile}
                             width={48}
                             height={48}
-                            className="relative rounded-full object-cover border-2 border-white"
+                            className="relative rounded-full object-cover border-2 border-zinc-700"
                         />
                     </motion.button>
 
                     {/* App name */}
-                    <span className="font-playfair text-xl font-bold tracking-tight hidden sm:inline" style={{ color: "#051F20" }}>
+                    <span className="font-playfair text-xl font-bold tracking-tight hidden sm:inline text-text-primary">
                         Lectio
                     </span>
 
@@ -94,12 +94,12 @@ export default function HomeView() {
                                 animate={{ opacity: 1, x: 0, scale: 1 }}
                                 exit={{ opacity: 0, x: -10, scale: 0.95 }}
                                 transition={{ duration: 0.2 }}
-                                className="absolute left-full ml-3 glass px-4 py-2.5 rounded-xl shadow-soft-md border border-primary-100 min-w-[200px]"
+                                className="absolute left-full ml-3 glass px-4 py-2.5 rounded-xl shadow-soft-md border border-border min-w-[200px]"
                             >
                                 <div className="flex items-center gap-2">
-                                    <Sparkles className="w-4 h-4 text-primary-300" />
-                                    <span className="text-sm" style={{ color: "#235347" }}>
-                                        Hola, <span className="font-semibold" style={{ color: "#051F20" }}>{displayName}</span>
+                                    <Sparkles className="w-4 h-4 text-blue-400" />
+                                    <span className="text-sm text-text-secondary">
+                                        Hola, <span className="font-semibold text-text-primary">{displayName}</span>
                                     </span>
                                 </div>
                             </motion.div>
@@ -129,14 +129,14 @@ export default function HomeView() {
             <main className="flex flex-1 flex-col sm:flex-row">
                 <h1 className="sr-only">Mi biblioteca</h1>
                 {/* Sidebar responsive */}
-                <aside className="w-full sm:w-auto sm:flex-shrink-0 glass-strong p-4 sm:p-5 sm:border-r border-primary-100">
+                <aside className="w-full sm:w-auto sm:flex-shrink-0 glass-strong p-4 sm:p-5 sm:border-r border-border">
                     <FiltersCard selectFilter={setFilter} currentFilter={filter} />
                 </aside>
 
                 {/* Book Container - scrollable */}
                 <section aria-label="Libros" className="flex-1 p-4 sm:p-6">
                     {error && (
-                        <div role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        <div role="alert" className="mb-4 rounded-xl border border-red-900/40 bg-red-950/30 px-4 py-3 text-sm text-red-300">
                             {error}. Revisá tu conexión e intentá nuevamente.
                         </div>
                     )}
@@ -172,11 +172,9 @@ export default function HomeView() {
                         aria-label="Agregar nuevo libro"
                     >
                         {/* Glow effect */}
-                        <div className="absolute inset-0 gradient-primary rounded-2xl blur-lg opacity-50 group-hover:opacity-75 transition-opacity" />
-
+                        <div className="absolute inset-0 bg-blue-500 rounded-2xl blur-lg opacity-40 group-hover:opacity-70 transition-opacity" />
                         {/* Button */}
-                        <div className="relative gradient-primary p-4 rounded-2xl shadow-soft-lg flex items-center justify-center">
-                            <CircleFadingPlus className="w-7 h-7 text-white" />
+                        <div className="relative bg-blue-500 hover:bg-blue-600 p-4 rounded-2xl shadow-soft-lg flex items-center justify-center">                            <CircleFadingPlus className="w-7 h-7 text-white" />
                         </div>
                     </motion.button>
                 )}

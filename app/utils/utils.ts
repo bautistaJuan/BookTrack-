@@ -28,12 +28,15 @@ export const filters: Filter[] = [
 export function getTagColor(status: string) {
   switch (status) {
     case "to read":
-      return "bg-amber-50 text-amber-700 border border-amber-200";
+      return "bg-zinc-800 text-zinc-300 border border-zinc-700";
+
     case "reading":
-      return "bg-primary-50 text-primary-800 border border-primary-200";
+      return "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+
     case "finished":
-      return "bg-primary-100 text-primary-900 border border-primary-300";
+      return "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
+
     default:
-      return "bg-gray-100 text-gray-700 border border-gray-300";
+      return "bg-zinc-800 text-zinc-400 border border-zinc-700";
   }
 }

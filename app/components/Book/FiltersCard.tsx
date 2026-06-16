@@ -1,11 +1,12 @@
 "use client";
-import { motion } from "framer-motion";
-import { FilterCardProps } from "../../types/types";
-import { filters } from "@utils/utils";
+import {motion} from "framer-motion";
+import {FilterCardProps} from "../../types/types";
+import {filters} from "@utils/utils";
 
-export default function FiltersCard({ selectFilter, currentFilter }: FilterCardProps) {
+export default function FiltersCard({selectFilter, currentFilter}: FilterCardProps) {
     return (
-        <div role="group" aria-label="Filtrar libros por estado" className="flex sm:flex-col items-center justify-center gap-2">
+        <div role="group" aria-label="Filtrar libros por estado"
+             className="flex sm:flex-col items-center justify-center gap-2">
             {filters.map((f, index) => {
                 const isActive = currentFilter === f.value;
                 const Icon = f.icon;
@@ -14,36 +15,42 @@ export default function FiltersCard({ selectFilter, currentFilter }: FilterCardP
                     <motion.button
                         type="button"
                         key={f.value}
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
+                        initial={{opacity: 0, y: -10}}
+                        animate={{opacity: 1, y: 0}}
+                        transition={{duration: 0.3, delay: index * 0.05}}
+                        whileHover={{scale: 1.03}}
+                        whileTap={{scale: 0.97}}
                         onClick={() => selectFilter(f.value)}
                         aria-pressed={isActive}
                         aria-label={`Mostrar ${f.label.toLowerCase()}`}
                         className={`
                             relative flex items-center gap-3 px-4 py-3 rounded-xl w-full sm:w-[140px]
                             font-medium text-sm transition-all duration-300
-                            ${isActive
+                            ${
+                            isActive
                                 ? "text-white shadow-soft-md"
-                                : "hover:bg-primary-50"
-                            }
+                                : "text-text-secondary hover:bg-zinc-800"
+                        }
                         `}
-                        style={!isActive ? { color: "#235347" } : undefined}
                     >
                         {/* Active background gradient */}
                         {isActive && (
                             <motion.div
                                 layoutId="activeFilter"
                                 className="absolute inset-0 gradient-primary rounded-xl"
-                                transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
+                                transition={{type: "spring", bounce: 0.2, duration: 0.5}}
                             />
                         )}
 
                         {/* Icon */}
-                        <div className={`relative z-10 ${isActive ? "text-white" : "text-primary-300"}`}>
-                            <Icon size={20} />
+                        <div
+                            className={`relative z-10 ${
+                                isActive
+                                    ? "text-white"
+                                    : "text-text-muted"
+                            }`}
+                        >
+                            <Icon size={15}/>
                         </div>
 
                         {/* Label */}

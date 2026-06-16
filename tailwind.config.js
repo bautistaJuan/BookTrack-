@@ -9,53 +9,61 @@ module.exports = {
       },
       colors: {
         primary: {
-          DEFAULT: "#235347",
-          50: "#EDF8EF",
-          100: "#DAF1DE",
-          200: "#B5D4BF",
-          300: "#8EB69B",
-          400: "#5A9A80",
-          500: "#235347",
-          600: "#1D4A3F",
-          700: "#173E33",
-          800: "#0D3028",
-          900: "#051F20",
+          DEFAULT: "#ffffff",
+          50: "#ffffff",
+          100: "#f5f5f5",
+          200: "#e5e5e5",
+          300: "#d4d4d4",
+          400: "#a3a3a3",
+          500: "#737373",
+          600: "#525252",
+          700: "#404040",
+          800: "#262626",
+          900: "#171717",
         },
+
         secondary: {
-          DEFAULT: "#8EB69B",
-          light: "#DAF1DE",
+          DEFAULT: "#2f2f2f",
+          light: "#373737",
         },
+
         accent: {
-          DEFAULT: "#8EB69B",
-          50: "#F2F9F4",
-          100: "#DAF1DE",
-          200: "#B5D4BF",
-          300: "#8EB69B",
-          400: "#6A9E7E",
-          500: "#4A8565",
-          600: "#235347",
+          DEFAULT: "#2383e2",
+          50: "#eff6ff",
+          100: "#dbeafe",
+          200: "#bfdbfe",
+          300: "#93c5fd",
+          400: "#60a5fa",
+          500: "#3b82f6",
+          600: "#2383e2",
         },
+
         danger: {
           DEFAULT: "#ef4444",
           light: "#fecaca",
         },
+
         warning: {
           DEFAULT: "#f59e0b",
           light: "#fef3c7",
         },
+
         surface: {
-          DEFAULT: "#ffffff",
-          secondary: "#f8fafc",
+          DEFAULT: "#191919",
+          secondary: "#202020",
         },
-        background: "#f8fafc",
+
+        background: "#191919",
+
         border: {
-          DEFAULT: "#e2e8f0",
-          light: "#f1f5f9",
+          DEFAULT: "#2f2f2f",
+          light: "#373737",
         },
+
         text: {
-          primary: "#051F20",
-          secondary: "#235347",
-          muted: "#8EB69B",
+          primary: "#ffffff",
+          secondary: "#a3a3a3",
+          muted: "#737373",
         },
       },
       borderRadius: {
@@ -64,12 +72,13 @@ module.exports = {
         "3xl": "24px",
       },
       boxShadow: {
-        soft: "0 2px 10px 0 rgb(5 31 32 / 0.05)",
-        "soft-md": "0 4px 20px 0 rgb(5 31 32 / 0.08)",
-        "soft-lg": "0 10px 40px -10px rgb(5 31 32 / 0.1)",
-        "soft-xl": "0 20px 50px -15px rgb(5 31 32 / 0.15)",
-        glow: "0 0 20px 0 rgb(35 83 71 / 0.3)",
-        "glow-accent": "0 0 20px 0 rgb(142 182 155 / 0.3)",
+        soft: "0 2px 10px rgb(0 0 0 / 0.25)",
+        "soft-md": "0 8px 20px rgb(0 0 0 / 0.35)",
+        "soft-lg": "0 12px 40px rgb(0 0 0 / 0.45)",
+        "soft-xl": "0 20px 60px rgb(0 0 0 / 0.55)",
+
+        glow: "0 0 25px rgb(124 58 237 / 0.35)",
+        "glow-accent": "0 0 25px rgb(245 158 11 / 0.35)",
       },
       animation: {
         float: "float 3s ease-in-out infinite",

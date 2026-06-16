@@ -30,10 +30,10 @@ export default function BookCard({
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -4 }}
             transition={{ duration: 0.3 }}
-            className="group relative flex h-full w-full flex-col gap-4 rounded-2xl border border-primary-100 bg-white p-6 shadow-soft transition-all duration-300 hover:border-primary-300 hover:shadow-soft-lg"
-        >
+            className="group relative flex h-full w-full flex-col gap-4 rounded-2xl border border-border bg-surface p-6 shadow-soft transition-all duration-300 hover:border-zinc-600 hover:shadow-soft-lg"        >
             {/* Gradient accent on hover */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary-500 to-primary-300 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div
+                className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-blue-400 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"            />
 
             {/* Book Actions */}
             <BookActions
@@ -47,14 +47,20 @@ export default function BookCard({
                 aria-label={`Ver detalles de ${book.title}, de ${book.author}`}
             >
                 <div className="flex items-start gap-4 pr-8">
-                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-primary-50 text-primary-500 shadow-soft transition-all duration-300 group-hover:bg-primary-500 group-hover:text-white">
+                    <div
+                        className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-zinc-800 text-zinc-300 shadow-soft transition-all duration-300 group-hover:bg-blue-500 group-hover:text-white"
+                    >
                         <BookOpen size={24} aria-hidden="true" />
                     </div>
                     <div className="min-w-0 flex-1 pt-1">
-                        <h2 className="line-clamp-1 text-lg font-bold tracking-tight text-primary-900 transition-colors duration-200 group-hover:text-primary-500">
+                        <h2
+                            className="line-clamp-1 text-lg font-bold tracking-tight text-text-primary transition-colors duration-200 group-hover:text-blue-400"
+                        >
                             {book.title}
                         </h2>
-                        <p className="mt-0.5 line-clamp-1 text-sm font-medium text-primary-500">
+                        <p
+                            className="mt-0.5 line-clamp-1 text-sm font-medium text-text-secondary"
+                        >
                             {book.author}
                         </p>
                     </div>
@@ -64,20 +70,19 @@ export default function BookCard({
             {/* Progress Bar */}
             <div className="space-y-2">
                 <div className="flex items-center justify-between text-xs">
-                    <span className="text-primary-300">Progreso</span>
-                    <span className="font-medium" style={{ color: "#235347" }}>{Math.round(getPorcentaje)}%</span>
+                    <span className="text-text-muted">Progreso</span>
+                    <span className="font-medium">{Math.round(getPorcentaje)}%</span>
                 </div>
-                <div className="w-full h-2.5 bg-primary-50 rounded-full overflow-hidden">
+                <div className="w-full h-2.5 bg-zinc-800 rounded-full overflow-hidden">
                     <motion.div
                         role="progressbar"
                         aria-label={`Progreso de ${book.title}`}
                         aria-valuemin={0}
                         aria-valuemax={100}
                         aria-valuenow={Math.round(getPorcentaje)}
-                        className="h-full gradient-primary rounded-full"
-                        initial={{ width: 0 }}
+                        className="h-full rounded-full bg-gradient-to-r from-blue-500 to-blue-400"                        initial={{ width: 0 }}
                         animate={{ width: `${getPorcentaje}%` }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        transition={{ duration: 0.6, ease: 'easeOut' }}
                     />
                 </div>
             </div>
@@ -91,7 +96,7 @@ export default function BookCard({
                             ? "📖 Leyendo"
                             : "✅ Finalizado"}
                 </span>
-                <span className="text-xs text-primary-300">
+                <span className="text-xs text-text-muted">
                     {book.pagesRead} / {book.pages} pág.
                 </span>
             </div>

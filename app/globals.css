@@ -3,49 +3,54 @@
 @tailwind utilities;
 
 :root {
-    /* Primary Colors */
-    --primary: 142 71% 35%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 10%;
 
-    /* Secondary Colors */
-    --secondary: 142 55% 65%;
-    --secondary-foreground: 142 71% 15%;
+    --secondary: 0 0% 18%;
+    --secondary-foreground: 0 0% 100%;
 
-    /* Accent */
-    --accent: 30 95% 60%;
-    --accent-foreground: 30 100% 15%;
+    --accent: 211 77% 51%;
+    --accent-foreground: 0 0% 100%;
 
-    /* Backgrounds */
-    --background: 210 20% 98%;
-    --surface: 0 0% 100%;
-    --muted: 210 15% 93%;
+    --background: 0 0% 10%;
+    --surface: 0 0% 12%;
+    --muted: 0 0% 16%;
 
-    /* Text */
-    --text-primary: 220 25% 10%;
-    --text-secondary: 220 10% 40%;
-    --text-muted: 220 10% 60%;
+    --text-primary: 0 0% 98%;
+    --text-secondary: 0 0% 70%;
+    --text-muted: 0 0% 45%;
 
-    /* Borders */
-    --border: 220 15% 88%;
-    --border-light: 220 15% 93%;
+    --border: 0 0% 18%;
+    --border-light: 0 0% 22%;
 
-    /* Danger */
     --danger: 0 72% 51%;
     --danger-foreground: 0 0% 100%;
 
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-    --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-    --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.05);
-    --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.25);
+    --shadow: 0 4px 8px rgb(0 0 0 / 0.35);
+    --shadow-md: 0 8px 16px rgb(0 0 0 / 0.45);
+    --shadow-lg: 0 16px 32px rgb(0 0 0 / 0.55);
+    --shadow-xl: 0 24px 48px rgb(0 0 0 / 0.65);
 
-    /* Gradients — Lectio palette */
-    --gradient-primary: linear-gradient(135deg, #235347 0%, #8EB69B 100%);
-    --gradient-accent: linear-gradient(135deg, #8EB69B 0%, #DAF1DE 100%);
-    --gradient-hero: linear-gradient(135deg, #EDF8EF 0%, #DAF1DE 50%, #EDF8EF 100%);
+    --gradient-primary: linear-gradient(
+            135deg,
+            #2f2f2f 0%,
+            #202020 100%
+    );
+
+    --gradient-accent: linear-gradient(
+            135deg,
+            #2383e2 0%,
+            #1d72c9 100%
+    );
+
+    --gradient-hero: linear-gradient(
+            135deg,
+            #191919 0%,
+            #1f1f1f 50%,
+            #191919 100%
+    );
 }
-
 * {
     box-sizing: border-box;
 }
@@ -66,7 +71,7 @@ select {
 }
 
 :focus-visible {
-    outline: 3px solid #8EB69B;
+    outline: 3px solid #000000;
 }
 
 /* Scrollbar Styling */
@@ -92,15 +97,13 @@ select {
 /* Utility Classes */
 @layer utilities {
     .glass {
-        background: rgba(255, 255, 255, 0.85);
+        background: rgba(25, 25, 25, 0.85);
         backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
     }
 
     .glass-strong {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(25, 25, 25, 0.95);
         backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
     }
 
     .gradient-primary {
@@ -239,7 +242,7 @@ select {
 
     0%,
     100% {
-        background-position: 0% 50%;
+        background-position: 0 50%;
     }
 
     50% {
@@ -256,7 +259,12 @@ select {
 }
 
 .animate-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.08),
+            transparent
+    );
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
 }
